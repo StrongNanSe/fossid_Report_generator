@@ -3,6 +3,7 @@
 
 config.properties
 license_Attribute.json
+*.xls
 
 ### Eclipse ###
 .metadata
@@ -16,7 +17,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-.idea
+.idea/
+
 
 # External tool builders
 .externalToolBuilders/
