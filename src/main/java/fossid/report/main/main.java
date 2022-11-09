@@ -1,19 +1,21 @@
 package fossid.report.main;
 
-import fossid.report.attribute.setProjectLicenseAttribute;
+import fossid.report.attribute.SetProjectLicenseAttribute;
 import fossid.report.excel.CreateReport;
-import fossid.report.getVuln.runcli;
-import fossid.report.getdata.getBillofMaterials;
-import fossid.report.getdata.getFolderMatrics;
-import fossid.report.getdata.getIdentifiedFiles;
-import fossid.report.getdata.getLoginInfo;
-import fossid.report.getdata.getprojectVersionInfo;
+import fossid.report.getVuln.RunCli;
+import fossid.report.getdata.GetBillOfMaterials;
+import fossid.report.getdata.GetFolderMatrices;
+import fossid.report.getdata.GetIdentifiedFiles;
+import fossid.report.getdata.GetLoginInfo;
+import fossid.report.getdata.GetProjectVersionInfo;
 import jxl.write.WriteException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
-public class main {
-
+public class Main {
+	private static final Logger logger = LogManager.getLogger(Main.class);
+	private static final long start = System.currentTimeMillis();
 	public static void main(String[] args) {
-		
 		try {
 			
 			String protocol = "";
@@ -63,44 +65,44 @@ public class main {
 				i++;
 			}
 			
-			printInfo print = new printInfo();
-			print.startFOSSID();
+			PrintInfo.startFOSSID();
 			
-			getLoginInfo common = new getLoginInfo();
+			GetLoginInfo common = new GetLoginInfo();
 			common.getInfo(protocol, address, userName, apikey);
 			
-			validateAuthentication validation = new validateAuthentication();
-			validation.validateauthentication();
+			ValidateAuthentication.validateAuthentication();
 			
-			getprojectVersionInfo pvInfo = new getprojectVersionInfo();
+			GetProjectVersionInfo pvInfo = new GetProjectVersionInfo();
 			pvInfo.getInfo(projectName, scanName, license);
 			
-			print.printinfo();
+			PrintInfo.printInfo();
 			
-			setProjectLicenseAttribute attributeInfo = new setProjectLicenseAttribute();
+			SetProjectLicenseAttribute attributeInfo = new SetProjectLicenseAttribute();
 			attributeInfo.getInfo();
 			
-			getBillofMaterials getBom = new getBillofMaterials();
+			GetBillOfMaterials getBom = new GetBillOfMaterials();
 			getBom.getInfo();
 			
 			// to set total and pending file count 
-			getFolderMatrics folderMatrics = new getFolderMatrics();
-			folderMatrics.getMatrics();
+			GetFolderMatrices folderMatrices = new GetFolderMatrices();
+			folderMatrices.getMatrices();
 			
-			getIdentifiedFiles idFiles = new getIdentifiedFiles();
+			GetIdentifiedFiles idFiles = new GetIdentifiedFiles();
 			idFiles.getData();
 			
-			runcli runCli = new runcli();			
+			RunCli runCli = new RunCli();
 			runCli.runCli(cliPath);
 			
 			CreateReport writeExcel = new CreateReport();
 			writeExcel.writeReport();
 
-			print.endFOSSID();
-			
+			PrintInfo.endFOSSID();
+
+			long end = System.currentTimeMillis();
 		} catch (WriteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();			
+			logger.error("Exception Message", e);
+		} finally {
+			logger.info("실행시간 : " + (System.currentTimeMillis() - start)/1000 + "s");
 		}
 	}
 }

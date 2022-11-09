@@ -2,26 +2,29 @@ package fossid.report.excel;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
-import fossid.report.values.vulnerableComponents;
+import fossid.report.values.VulnerableComponents;
 import jxl.write.WritableHyperlink;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class CreateSheet5 extends CreateSheet {
-	
+	private final Logger logger = LogManager.getLogger(CreateSheet5.class);
 	public CreateSheet5(){
 		super();
 	}
 	
-	vulnerableComponents vulnerableComponent = vulnerableComponents.getInstance();
+	VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 	ExcelValues excelVal = ExcelValues.getInstance();
 	WritableSheet sheet5 = excelVal.getSheet5();
 	WritableHyperlink hyperlink;
 	
-	public void writeSheet() throws WriteException {		
-		System.out.print("Creating sheet 6..");
-		
+	public void writeSheet() throws WriteException {
+		logger.info("Creating sheet 6..");
+
 		sheet5 = excelVal.getWB().createSheet("6. 취약점 정보", 5);
 		
 		for(int i=0; i < 7; i++) {
@@ -63,11 +66,10 @@ public class CreateSheet5 extends CreateSheet {
 				try {				
 					link = new WritableHyperlink(7, loop, new URL("https://nvd.nist.gov/vuln/detail/" + vulnerableComponent.getvulCVE().get(i).toString()));
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}			
 				
-			    link.setDescription("NVD 링크");
+			    Objects.requireNonNull(link).setDescription("NVD 링크");
 			    sheet5.addHyperlink(link);		    
 				
 			   	// merge component and version cells if the component contains more than two CVEs	   
@@ -82,13 +84,10 @@ public class CreateSheet5 extends CreateSheet {
 			
 		   	// merge component and version cells if the component contains more than two CVEs
 			if(loop - 2 == vulnerableComponent.getvulCVE().size()) {
-				//System.out.println(rowCount + " " +loop);
+				logger.debug(rowCount + " " +loop);
 				//sheet5.mergeCells(0, rowCount, 0, loop - 1);
 				//sheet5.mergeCells(1, rowCount, 1, loop - 1);			
 			}
 		}
-		
-		System.out.println();
-		
 	}
 }

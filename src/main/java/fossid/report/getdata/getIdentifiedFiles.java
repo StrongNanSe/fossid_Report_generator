@@ -12,16 +12,16 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import fossid.report.attribute.getProjectLicenseConflict;
-import fossid.report.attribute.setCompareLicenseAttribute;
-import fossid.report.values.billofmaterialsValues;
-import fossid.report.values.compareLicenseAttributeValues;
-import fossid.report.values.identifiedFilesValues;
-import fossid.report.values.loginValues;
-import fossid.report.values.projectValues;
-import fossid.report.values.vulnerableComponents;
+import fossid.report.attribute.GetProjectLicenseConflict;
+import fossid.report.attribute.SetCompareLicenseAttribute;
+import fossid.report.values.BillOfMaterialsValues;
+import fossid.report.values.CompareLicenseAttributeValues;
+import fossid.report.values.IdentifiedFilesValues;
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;
+import fossid.report.values.VulnerableComponents;
 
-public class getIdentifiedFiles {
+public class GetIdentifiedFiles {
 	
 	public void getData() {	
 		//Enable below method to get specific values of identified_files for BOM
@@ -31,16 +31,16 @@ public class getIdentifiedFiles {
 	
 	private void getIDfilesBom() {
 
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
-		identifiedFilesValues idValues = identifiedFilesValues.getInstance();
-	    billofmaterialsValues bomValues = billofmaterialsValues.getInstance();
-	    compareLicenseAttributeValues componentlicenseAttribute = compareLicenseAttributeValues.getInstance();
-	    vulnerableComponents vulnerableComponent = vulnerableComponents.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
+		IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
+	    BillOfMaterialsValues bomValues = BillOfMaterialsValues.getInstance();
+	    CompareLicenseAttributeValues componentlicenseAttribute = CompareLicenseAttributeValues.getInstance();
+	    VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 	    
-	    getProjectLicenseConflict projectLicenseConflict = new getProjectLicenseConflict();
-	    setCompareLicenseAttribute componetLicenseAttribute = new setCompareLicenseAttribute();
-	    getMatchTypes matchType = new getMatchTypes();
+	    GetProjectLicenseConflict projectLicenseConflict = new GetProjectLicenseConflict();
+	    SetCompareLicenseAttribute componetLicenseAttribute = new SetCompareLicenseAttribute();
+	    GetMatchTypes matchType = new GetMatchTypes();
 	    
 	    String matchTypeValue = "";
     	String matchTypeKey = "";
@@ -207,7 +207,7 @@ public class getIdentifiedFiles {
                     		}
                     		
                    			// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
-                   			setCompareLicenseAttribute.setCompareAttribute(licenseName);
+                   			SetCompareLicenseAttribute.setCompareAttribute(licenseName);
                    			// value: 0 - no conflict / 1 - project license conflict
                    			projectLicenseConflict.projectLicenseConflict(licenseName);
                    			ckey = licenseName;
@@ -239,11 +239,11 @@ public class getIdentifiedFiles {
                     	String componentValue = tempObj.get("component_name").toString()+tempObj.get("component_version").toString();                    	
                     	                    	
                     	// get a component value
-                    	bomFileCount = bomValues.getUcomponentFileCount().get(componentValue);
+                    	bomFileCount = bomValues.getUComponentFileCount().get(componentValue);
                     	// plus value
                     	bomFileCount++;
                     	// then put value in the component
-                    	bomValues.setUcomponentFileCount(componentValue, bomFileCount);
+                    	bomValues.setUComponentFileCount(componentValue, bomFileCount);
                     	
                     	// set value for a license
                     	String licenseValue = null;
@@ -253,11 +253,11 @@ public class getIdentifiedFiles {
                     		licenseValue = licenseName;          		
                     	}
                     	// get a component value
-                    	licenseFileCount = bomValues.getUlicenseFileCount().get(licenseValue);                    	
+                    	licenseFileCount = bomValues.getULicenseFileCount().get(licenseValue);
                     	// plus value
                     	licenseFileCount++;                    	
                     	// then put value in the license
-                    	bomValues.setUlicenseFileCount(licenseValue, licenseFileCount);
+                    	bomValues.setULicenseFileCount(licenseValue, licenseFileCount);
                     	
                     	//set vulnerable components
                     	if(tempObj.get("component_cpe") == null || tempObj.get("component_cpe").equals("")) {                    		
@@ -292,9 +292,10 @@ public class getIdentifiedFiles {
                     		//String st = Long.toString((long) tempObj.get("file_size"));
                     		//int temp = Integer.parseInt(st);
                     		
-                    		// by 21.2.3 
-                    		int temp = Integer.parseInt(tempObj.get("file_size").toString());                    		
-                    		                    		
+                    		// by 21.2.3  
+                    		//long temp = Integer.parseInt(tempObj.get("file_size").toString());
+                    		long temp = Long.parseLong(tempObj.get("file_size").toString());
+                    	
                     		idValues.setfileTotalSize(temp);
                     	} 
                 		

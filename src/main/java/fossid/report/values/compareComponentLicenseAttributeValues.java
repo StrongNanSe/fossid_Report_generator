@@ -1,14 +1,16 @@
 package fossid.report.values;
 
-//This class is set to compare license attirbutes
-public class compareComponentLicenseAttributeValues {
-	
-	private static compareComponentLicenseAttributeValues values = new compareComponentLicenseAttributeValues();
+import java.io.Serializable;
 
-	private compareComponentLicenseAttributeValues() {
+//This class is set to compare license attributes
+public class CompareComponentLicenseAttributeValues implements Serializable {
+	
+	private static CompareComponentLicenseAttributeValues values = new CompareComponentLicenseAttributeValues();
+
+	private CompareComponentLicenseAttributeValues() {
 	}
 
-	public static compareComponentLicenseAttributeValues getInstance() {
+	public static CompareComponentLicenseAttributeValues getInstance() {
 		return values;
 	}
 	
@@ -26,94 +28,94 @@ public class compareComponentLicenseAttributeValues {
 	private String coAttribute12;
 	private String coAttribute13;
 	
-	public String getcoAttribute1() {
+	public String getCoAttribute1() {
 		return coAttribute1;
 	}
-	public void setcoAttribute1(String attribute) {		
+	public void setCoAttribute1(String attribute) {
 		this.coAttribute1 = attribute;
 	}
 	
-	public String getcoAttribute2() {
+	public String getCoAttribute2() {
 		return coAttribute2;
 	}
-	public void setcoAttribute2(String attribute) {
+	public void setCoAttribute2(String attribute) {
 		this.coAttribute2 = attribute;
 	}
 	
-	public String getcoAttribute3() {
+	public String getCoAttribute3() {
 		return coAttribute3;
 	}
-	public void setcoAttribute3(String attribute) {
+	public void setCoAttribute3(String attribute) {
 		this.coAttribute3 = attribute;
 	}
 	
-	public String getcoAttribute4() {
+	public String getCoAttribute4() {
 		return coAttribute4;
 	}
-	public void setcoAttribute4(String attribute) {
+	public void setCoAttribute4(String attribute) {
 		this.coAttribute4 = attribute;
 	}
 	
-	public String getcoAttribute5() {
+	public String getCoAttribute5() {
 		return coAttribute5;
 	}
-	public void setcoAttribute5(String attribute) {
+	public void setCoAttribute5(String attribute) {
 		this.coAttribute5 = attribute;
 	}
 	
-	public String getcoAttribute6() {
+	public String getCoAttribute6() {
 		return coAttribute6;
 	}
-	public void setcoAttribute6(String attribute) {
+	public void setCoAttribute6(String attribute) {
 		this.coAttribute6 = attribute;
 	}
 	
-	public String getcoAttribute7() {
+	public String getCoAttribute7() {
 		return coAttribute7;
 	}
-	public void setcoAttribute7(String attribute) {
+	public void setCoAttribute7(String attribute) {
 		this.coAttribute7 = attribute;
 	}
 	
-	public String getcoAttribute8() {
+	public String getCoAttribute8() {
 		return coAttribute8;
 	}
-	public void setcoAttribute8(String attribute) {
+	public void setCoAttribute8(String attribute) {
 		this.coAttribute8 = attribute;
 	}
 	
-	public String getcoAttribute9() {
+	public String getCoAttribute9() {
 		return coAttribute9;
 	}
-	public void setcoAttribute9(String attribute) {
+	public void setCoAttribute9(String attribute) {
 		this.coAttribute9 = attribute;
 	}
 	
-	public String getcoAttribute10() {
+	public String getCoAttribute10() {
 		return coAttribute10;
 	}
-	public void setcoAttribute10(String attribute) {
+	public void setCoAttribute10(String attribute) {
 		this.coAttribute10 = attribute;
 	}
 	
-	public String getcoAttribute11() {
+	public String getCoAttribute11() {
 		return coAttribute11;
 	}
-	public void setcoAttribute11(String attribute) {
+	public void setCoAttribute11(String attribute) {
 		this.coAttribute11 = attribute;
 	}
 	
-	public String getcoAttribute12() {
+	public String getCoAttribute12() {
 		return coAttribute12;
 	}
-	public void setcoAttribute12(String attribute) {
+	public void setCoAttribute12(String attribute) {
 		this.coAttribute12 = attribute;
 	}
 	
-	public String getcoAttribute13() {
+	public String getCoAttribute13() {
 		return coAttribute13;
 	}
-	public void setcoAttribute13(String attribute) {
+	public void setCoAttribute13(String attribute) {
 		this.coAttribute13 = attribute;
 	}
 	

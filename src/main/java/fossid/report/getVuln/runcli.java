@@ -6,18 +6,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import fossid.report.getVuln.osValidator;
-import fossid.report.getVuln.setVulnData;
-import fossid.report.values.vulnerableComponents;
+import fossid.report.values.VulnerableComponents;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
-public class runcli {
-	
+public class RunCli {
+	private final Logger logger = LogManager.getLogger(RunCli.class);
     public void runCli(String cliPath) {		
     	getProp(cliPath);		
     	cliexe();
 	}
-    
-	static osValidator osValidation = new osValidator();
+
 	static String fossidCli = "";
 	static String cliResult = "";
 	
@@ -28,8 +27,7 @@ public class runcli {
 		try {
 			props.load(is);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.error("Exception Message", e1);
 		}
 		
 		// To get path of cli
@@ -44,52 +42,47 @@ public class runcli {
 		// To set path based on platform
 		if(end.equals("/") || end.equals("\\")) {		  		
 		 } else {
-			if(osValidation.isWindows()) {
+			if(OsValidator.isWindows()) {
 				fossidCli = fossidCli + "\\";
-			} else if (osValidation.isMac() || osValidation.isSolaris() || osValidation.isUnix()){					
+			} else if (OsValidator.isMac() || OsValidator.isSolaris() || OsValidator.isUnix()){
 				fossidCli = fossidCli + "/";
 			}
 		}		
 	}
 
 	public void cliexe() {
-		vulnerableComponents vulnerableComponent = vulnerableComponents.getInstance();
-		setVulnData setData = new setVulnData();
-		
+		VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
+
 		String command = "";
 		String vulnResult = "";
 		
 		for(int i = 0 ; i < vulnerableComponent.getcomponentCPE().size(); i++) {
-			if(osValidation.isWindows()){
+			if(OsValidator.isWindows()){
 				
 				try {					
 					command = fossidCli + "fossid-cli.exe --cpe " + vulnerableComponent.getcomponentCPE().get(i);					
 					shellCmd(command);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}		
-				
-				//System.out.print(cliResult);				
-				setData.setData(cliResult, vulnerableComponent.getcomponentCPE().get(i).toString(),
+					logger.error("Exception Message", e);
+				}
+
+				logger.debug(cliResult);
+
+				SetVulnData.setData(cliResult, vulnerableComponent.getcomponentCPE().get(i).toString(),
 						vulnerableComponent.getcomponentName().get(i).toString(), vulnerableComponent.getcomponentVersion().get(i).toString());
-			} else if(osValidation.isUnix() || osValidation.isSolaris()){
+			} else if(OsValidator.isUnix() || OsValidator.isSolaris()){
 				
 				try {					
 					command = fossidCli + "fossid-cli --cpe " + vulnerableComponent.getcomponentCPE().get(i);					
 					shellCmd(command);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("Exception Message", e);
 				}		
 				
-				setData.setData(cliResult, vulnerableComponent.getcomponentCPE().get(i).toString(),
+				SetVulnData.setData(cliResult, vulnerableComponent.getcomponentCPE().get(i).toString(),
 						vulnerableComponent.getcomponentName().get(i).toString(), vulnerableComponent.getcomponentVersion().get(i).toString());
 			}
 		}
-		
-		//System.out.println();
-			
 	}
 	
 	public static void shellCmd(String command) throws Exception {

@@ -1,25 +1,25 @@
 package fossid.report.values;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class identifiedFilesValues {
+public class IdentifiedFilesValues implements Serializable {
 	
-	private static identifiedFilesValues values = new identifiedFilesValues();
+	private static IdentifiedFilesValues values = new IdentifiedFilesValues();
 
-	private identifiedFilesValues() {
+	private IdentifiedFilesValues() {
 	}
 
-	public static identifiedFilesValues getInstance() {
+	public static IdentifiedFilesValues getInstance() {
 		return values;
 	}
 	
 	private int fileTotalCount;
 	private int pendingFileCount;
 	private int ignoredFileCount;
-	private int fileTotalSize;
+	private long fileTotalSize;
 	private int identifiedFileCount;
 	private int projectConflictFileCount;
 	private int patentIssueFileCount;
@@ -86,10 +86,10 @@ public class identifiedFilesValues {
 		this.fileTotalCount = fileTotalCount;
 	}
 	
-	public int getfileTotalSize() {
+	public long getfileTotalSize() {
 		return fileTotalSize;
 	}
-	public void setfileTotalSize(int filesize) {
+	public void setfileTotalSize(long filesize) {
 		this.fileTotalSize = fileTotalSize + filesize;
 	}
 	

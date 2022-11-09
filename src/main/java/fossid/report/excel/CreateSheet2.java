@@ -26,43 +26,34 @@ package fossid.report.excel;
 
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import fossid.report.excel.ExcelValues;
-import fossid.report.values.billofmaterialsValues;
-import fossid.report.values.identifiedFilesValues;
-import fossid.report.values.projectLicenseAttributeValues;
-import fossid.report.values.compareLicenseAttributeValues;
-import fossid.report.values.projectValues;
-import fossid.report.attribute.getProjectLicenseConflict;
-import fossid.report.attribute.getComponetLicenseConflict;
-import fossid.report.attribute.setCompareLicenseAttribute;
-import fossid.report.attribute.setCompareComponentLicenseAttribute;
-import fossid.report.getdata.getNumberofIgnored;
+import fossid.report.values.BillOfMaterialsValues;
+import fossid.report.values.IdentifiedFilesValues;
+import fossid.report.values.ProjectLicenseAttributeValues;
+import fossid.report.values.CompareLicenseAttributeValues;
+import fossid.report.values.ProjectValues;
+import fossid.report.attribute.SetCompareLicenseAttribute;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 
 public class CreateSheet2 extends CreateSheet{
-	
+	private final Logger logger = LogManager.getLogger(CreateSheet2.class);
 	public CreateSheet2(){
 		super();
 	}	
 	
 	ExcelValues excelVal = ExcelValues.getInstance();
-	billofmaterialsValues bomValues = billofmaterialsValues.getInstance();
-	projectValues pvalues = projectValues.getInstance();	
-	identifiedFilesValues idValues = identifiedFilesValues.getInstance();
-	projectLicenseAttributeValues proejctLicenseAttirbute = projectLicenseAttributeValues.getInstance();
-	compareLicenseAttributeValues compareLicenseAttribute = compareLicenseAttributeValues.getInstance();
-	
-	getProjectLicenseConflict projectLicenseConflict = new getProjectLicenseConflict();
-	getComponetLicenseConflict componentLicenseConflict = new getComponetLicenseConflict();	
-	setCompareLicenseAttribute setCompareLicenseAttribute = new setCompareLicenseAttribute();
-	setCompareComponentLicenseAttribute setcompareComponentLicenseAttribute = new setCompareComponentLicenseAttribute();
-	getNumberofIgnored ignoredNumber = new getNumberofIgnored();
-	
+	BillOfMaterialsValues bomValues = BillOfMaterialsValues.getInstance();
+	ProjectValues pValues = ProjectValues.getInstance();
+	IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
+	ProjectLicenseAttributeValues projectLicenseAttribute = ProjectLicenseAttributeValues.getInstance();
+	CompareLicenseAttributeValues compareLicenseAttribute = CompareLicenseAttributeValues.getInstance();
+
 	WritableSheet sheet2 = excelVal.getSheet2();		
 	
 	public void writeSheet() throws WriteException {
-		System.out.println("Creating sheet 3..");		
-		
+		logger.info("Creating sheet 3..");
+
 		sheet2 = excelVal.getWB().createSheet("3. 준법성 현황", 2);
 		
 		for(int i=0; i < 9; i++) {
@@ -91,14 +82,14 @@ public class CreateSheet2 extends CreateSheet{
 		int value = 0;
 		String key = null;
 		
-		for(int i = 0; i < bomValues.getUcomponentName().size(); i++) {
+		for(int i = 0; i < bomValues.getUComponentName().size(); i++) {
 			// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
 			//setCompareLicenseAttribute.setCompareAttribute(bomValues.getUcomponentLicenseName().get(i));
 			
 			// value: 0 - no conflict / 1 - project license conflict
-			//projectLicenseConflict.projectLicenseConflict(bomValues.getUcomponentLicenseName().get(i));
+			//ProjectLicenseConflict.projectLicenseConflict(bomValues.getUcomponentLicenseName().get(i));
 			
-			key = bomValues.getUcomponentLicenseName().get(i);
+			key = bomValues.getUComponentLicenseName().get(i);
 			value =	bomValues.getProjectLicenseConflict().get(key);
 			if(value == 0) {
 				addLabel(sheet2, 0, i + 2, "충돌없음", style.noConflict);
@@ -112,42 +103,42 @@ public class CreateSheet2 extends CreateSheet{
 				//bomValues.setLicensetwithProjectConflict(bomValues.getUcomponentLicenseName().get(i));
 			} 	
 			
-			for(int j =0; j < bomValues.getLicensewithoutProjectConflict().size(); j++) {
-				key = bomValues.getLicensewithoutProjectConflict().get(j);
+			for(int j = 0; j < bomValues.getLicenseWithoutProjectConflict().size(); j++) {
+				key = bomValues.getLicenseWithoutProjectConflict().get(j);
 				value =	bomValues.getComponentLicenseConflict().get(key);
-				if (value == 1 && key.equals(bomValues.getUcomponentLicenseName().get(i))) {				
+				if (value == 1 && key.equals(bomValues.getUComponentLicenseName().get(i))) {
 					addLabel(sheet2, 0, i + 2, "다른 컴포넌트 라이선스와 충돌", style.componentConflict);
-					bomValues.setcomponentConflictLicense(bomValues.getLicensewithoutProjectConflict().get(j));				
+					bomValues.setComponentConflictLicense(bomValues.getLicenseWithoutProjectConflict().get(j));
 				}
 			}
 			
-			addLabel(sheet2, 1, i + 2, bomValues.getUcomponentName().get(i), style.sh1tableFormat1);
-			addLabel(sheet2, 2, i + 2, bomValues.getUcomponentVersion().get(i), style.sh1tableFormat1);
-			addLabel(sheet2, 3, i + 2, bomValues.getUcomponentHomepage().get(i), style.sh1tableFormat1);
-			addLabel(sheet2, 4, i + 2, bomValues.getUcomponentLicenseName().get(i), style.sh1tableFormat1);
+			addLabel(sheet2, 1, i + 2, bomValues.getUComponentName().get(i), style.sh1tableFormat1);
+			addLabel(sheet2, 2, i + 2, bomValues.getUComponentVersion().get(i), style.sh1tableFormat1);
+			addLabel(sheet2, 3, i + 2, bomValues.getUComponentHomepage().get(i), style.sh1tableFormat1);
+			addLabel(sheet2, 4, i + 2, bomValues.getUComponentLicenseName().get(i), style.sh1tableFormat1);
 			
-			String tempValue = bomValues.getUcomponentName().get(i) + bomValues.getUcomponentVersion().get(i);
+			String tempValue = bomValues.getUComponentName().get(i) + bomValues.getUComponentVersion().get(i);
 			addLabel(sheet2, 5, i + 2, idValues.getmatchTypeHashmap().get(tempValue), style.sh1tableFormat1);
 			
 			// to use CreateSheet3.java
-			if(!(bomValues.getlicenseMatchType().containsKey(bomValues.getUcomponentLicenseName().get(i)))){
-				bomValues.setlicenseMatchType(bomValues.getUcomponentLicenseName().get(i), idValues.getmatchTypeHashmap().get(tempValue));
+			if(!(bomValues.getLicenseMatchType().containsKey(bomValues.getUComponentLicenseName().get(i)))){
+				bomValues.setLicenseMatchType(bomValues.getUComponentLicenseName().get(i), idValues.getmatchTypeHashmap().get(tempValue));
 			}
 			
 			if(idValues.getmatchTypeHashmap().get(tempValue) != null) {
 				if(idValues.getmatchTypeHashmap().get(tempValue).equals("Partial, Full")){	
-					bomValues.getlicenseMatchType().remove(bomValues.getUcomponentLicenseName().get(i));
-					bomValues.setlicenseMatchType(bomValues.getUcomponentLicenseName().get(i), idValues.getmatchTypeHashmap().get(tempValue));
+					bomValues.getLicenseMatchType().remove(bomValues.getUComponentLicenseName().get(i));
+					bomValues.setLicenseMatchType(bomValues.getUComponentLicenseName().get(i), idValues.getmatchTypeHashmap().get(tempValue));
 				}				
 			}
 						
-			key = bomValues.getUcomponentName().get(i)+bomValues.getUcomponentVersion().get(i);
-			addLabel(sheet2, 6, i + 2, Integer.toString(bomValues.getUcomponentFileCount().get(key)), style.sh1tableFormat1);			
+			key = bomValues.getUComponentName().get(i)+bomValues.getUComponentVersion().get(i);
+			addLabel(sheet2, 6, i + 2, Integer.toString(bomValues.getUComponentFileCount().get(key)), style.sh1tableFormat1);
 			
-			setCompareLicenseAttribute.setCompareAttribute(bomValues.getUcomponentLicenseName().get(i));
-			if (compareLicenseAttribute.getcoAttribute2().toString().equals("X") || compareLicenseAttribute.getcoAttribute2().toString().equals("M")) {
+			SetCompareLicenseAttribute.setCompareAttribute(bomValues.getUComponentLicenseName().get(i));
+			if (compareLicenseAttribute.getCoAttribute2().toString().equals("X") || compareLicenseAttribute.getCoAttribute2().toString().equals("M")) {
 				addLabel(sheet2, 7, i + 2, "X", style.sh1tableFormat1);
-			} else if(compareLicenseAttribute.getcoAttribute2().toString().equals("O")){
+			} else if(compareLicenseAttribute.getCoAttribute2().toString().equals("O")){
 				addLabel(sheet2, 7, i + 2, "O", style.sh1tableFormat1);
 			}
 			
@@ -155,18 +146,18 @@ public class CreateSheet2 extends CreateSheet{
 		}
 		
 		addLabel(sheet2, 0, projectRowCount + 2, "N/A", style.sh1tableFormat1);
-		addLabel(sheet2, 1, projectRowCount + 2, pvalues.getProjectName(), style.sh1tableFormat1);
-		addLabel(sheet2, 2, projectRowCount + 2, pvalues.getVersionName(), style.sh1tableFormat1);
+		addLabel(sheet2, 1, projectRowCount + 2, pValues.getProjectName(), style.sh1tableFormat1);
+		addLabel(sheet2, 2, projectRowCount + 2, pValues.getVersionName(), style.sh1tableFormat1);
 		addLabel(sheet2, 3, projectRowCount + 2, "", style.sh1tableFormat1);
-		addLabel(sheet2, 4, projectRowCount + 2, pvalues.getProjectLicense(), style.sh1tableFormat1);
+		addLabel(sheet2, 4, projectRowCount + 2, pValues.getProjectLicense(), style.sh1tableFormat1);
 		addLabel(sheet2, 5, projectRowCount + 2, "", style.sh1tableFormat1);		
 		
 		int totalCount = idValues.getfileTotalCount() - idValues.getIgnoredCount() - idValues.getIdentifiedFileCount();
 		addLabel(sheet2, 6, projectRowCount + 2, Integer.toString(totalCount), style.sh1tableFormat1);
 		
-		if(proejctLicenseAttirbute.getpjAttribute2().toString().equals("X")) {
+		if(projectLicenseAttribute.getPjAttribute2().toString().equals("X")) {
 			addLabel(sheet2, 7, projectRowCount + 2, "X", style.sh1tableFormat1);
-		} else if(proejctLicenseAttirbute.getpjAttribute2().toString().equals("O")){
+		} else if(projectLicenseAttribute.getPjAttribute2().toString().equals("O")){
 			addLabel(sheet2, 7, projectRowCount + 2, "O", style.sh1tableFormat1);
 		}	
 		

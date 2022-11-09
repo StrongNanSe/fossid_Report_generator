@@ -1,9 +1,8 @@
 package fossid.report.getdata;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-
+import fossid.report.values.IdentifiedFilesValues;
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -12,18 +11,14 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import fossid.report.values.identifiedFilesValues;
-import fossid.report.values.loginValues;
-import fossid.report.values.projectValues;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-public class getFolderMatrics {
-	
-	public void getMatrics() {
-		
-		identifiedFilesValues idValues = identifiedFilesValues.getInstance();
-		
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+public class GetFolderMatrices {
+	private IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
+	public void getMatrices() {
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 					
 		
 		JSONObject dataObject = new JSONObject();
@@ -40,9 +35,7 @@ public class getFolderMatrics {
 		HttpPost httpPost = new HttpPost(lvalues.getServerApiUri());
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		
-		
 		try {
-			
 			StringEntity entity = new StringEntity(rootObject.toString(), "UTF-8");
 			httpPost.addHeader("content-type", "application/json");
 			httpPost.setEntity(entity);
@@ -54,8 +47,7 @@ public class getFolderMatrics {
 				throw new RuntimeException(
 						"Failed : HTTP error code : " + httpClientResponse.getStatusLine().getStatusCode());
 			}	
-								
-			
+
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
 			String result = br.readLine();
@@ -67,8 +59,6 @@ public class getFolderMatrics {
 	        int fileTotalCount = Integer.parseInt(jsonObj2.get("total").toString());
 	        
             idValues.setgetfileTotalCount(fileTotalCount);
-            //idValues.setpendingFileCount(fileTotalCount - Integer.parseInt(jsonObj2.get("without_matches").toString()));
-            //idValues.setIdentifiedFileCount(identifiedFileCount);
 	        
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,13 +1,15 @@
 package fossid.report.values;
 
-public class projectValues {	
-	
-		private static projectValues values = new projectValues();
+import java.io.Serializable;
 
-		public projectValues() {
+public class ProjectValues implements Serializable {
+	
+		private static ProjectValues values = new ProjectValues();
+
+		public ProjectValues() {
 		}
 
-		public static projectValues getInstance() {
+		public static ProjectValues getInstance() {
 			return values;
 		}
 

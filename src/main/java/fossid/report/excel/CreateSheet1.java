@@ -5,34 +5,32 @@ import jxl.write.WriteException;
 
 import java.util.ArrayList;
 
-import fossid.report.attribute.getProjectLicenseConflict;
-import fossid.report.attribute.setCompareLicenseAttribute;
-import fossid.report.excel.ExcelValues;
-import fossid.report.values.projectValues;
-import fossid.report.values.billofmaterialsValues;
-import fossid.report.values.compareLicenseAttributeValues;
-import fossid.report.values.projectLicenseAttributeValues;
+import fossid.report.attribute.SetCompareLicenseAttribute;
+import fossid.report.values.ProjectValues;
+import fossid.report.values.BillOfMaterialsValues;
+import fossid.report.values.CompareLicenseAttributeValues;
+import fossid.report.values.ProjectLicenseAttributeValues;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class CreateSheet1 extends CreateSheet{
-	
+	private final Logger logger = LogManager.getLogger(CreateSheet1.class);
 	public CreateSheet1(){
 		super();
 	}
 	
 	
 	ExcelValues excelVal = ExcelValues.getInstance();
-	projectValues pvalues = projectValues.getInstance();
-	billofmaterialsValues bomValues = billofmaterialsValues.getInstance();
-	projectLicenseAttributeValues atvalues = projectLicenseAttributeValues.getInstance();
-	compareLicenseAttributeValues getcompareLicenseAttribute = compareLicenseAttributeValues.getInstance();
-	getProjectLicenseConflict projectLicenseConflict = new getProjectLicenseConflict();
-	setCompareLicenseAttribute setcompareLicenseAttribute = new setCompareLicenseAttribute();	
-	WritableSheet sheet1 = excelVal.getSheet1();	
+	ProjectValues pValues = ProjectValues.getInstance();
+	BillOfMaterialsValues bomValues = BillOfMaterialsValues.getInstance();
+	ProjectLicenseAttributeValues atValues = ProjectLicenseAttributeValues.getInstance();
+	CompareLicenseAttributeValues getCompareLicenseAttribute = CompareLicenseAttributeValues.getInstance();
+	WritableSheet sheet1 = excelVal.getSheet1();
 		
 
 	public void writeSheet() throws WriteException {
-		System.out.println("Creating sheet 2..");
-		
+		logger.info("Creating sheet 2..");
+
 		sheet1 = excelVal.getWB().createSheet("2. 검증의견", 1);
 		
 		sheet1.setColumnView(8, 15);
@@ -47,7 +45,7 @@ public class CreateSheet1 extends CreateSheet{
 		
 		sheet1.setRowView(1, 500);
 		sheet1.mergeCells(3, 1, 9, 1);
-		addLabel(sheet1, 3, 1, pvalues.getProjectLicense(), style.sh1tableFormat1);
+		addLabel(sheet1, 3, 1, pValues.getProjectLicense(), style.sh1tableFormat1);
 		
 		sheet1.setRowView(3, 500);
 		sheet1.mergeCells(0, 3, 1, 3);
@@ -63,15 +61,15 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 6, "No.", style.sh1tableFormat2);
 		sheet1.mergeCells(1, 6, 8, 6);
 		addLabel(sheet1, 1, 6, "의무사항", style.sh1tableFormat2);		
-		addLabel(sheet1, 9, 6, pvalues.getProjectLicense(), style.sh1tableFormat2);
+		addLabel(sheet1, 9, 6, pValues.getProjectLicense(), style.sh1tableFormat2);
 		
 		sheet1.setRowView(7, 500);
 		addLabel(sheet1, 0, 7, "1", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 7, 8, 7);
 		addLabel(sheet1, 1, 7, "배포 (바이너리 파일 배포에 의해서만 부여되는 의무사항)", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute1().toString().equals("X")) {
+		if(atValues.getPjAttribute1().toString().equals("X")) {
 			addLabel(sheet1, 9, 7, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute1().toString().equals("O")){
+		} else if(atValues.getPjAttribute1().toString().equals("O")){
 			addLabel(sheet1, 9, 7, "O", style.sh1tableFormat1);
 		}		
 		
@@ -79,11 +77,11 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 8, "2", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 8, 8, 8);		
 		addLabel(sheet1, 1, 8, "소스코드 공개/강제적 공유 의무사항", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute2().toString().equals("O")) {
+		if(atValues.getPjAttribute2().toString().equals("O")) {
 			addLabel(sheet1, 9, 8, "O", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute2().toString().equals("M")){
+		} else if(atValues.getPjAttribute2().toString().equals("M")){
 			addLabel(sheet1, 9, 8, "△", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute2().toString().equals("X")){
+		} else if(atValues.getPjAttribute2().toString().equals("X")){
 			addLabel(sheet1, 9, 8, "X", style.sh1tableFormat1);
 		}
 		
@@ -91,11 +89,11 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 9, "3", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 9, 8, 9);
 		addLabel(sheet1, 1, 9, "복제 및 수정 권한 허용", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute3().toString().equals("O")) {
+		if(atValues.getPjAttribute3().toString().equals("O")) {
 			addLabel(sheet1, 9, 9, "O", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute3().toString().equals("M")){
+		} else if(atValues.getPjAttribute3().toString().equals("M")){
 			addLabel(sheet1, 9, 9, "△", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute3().toString().equals("X")){
+		} else if(atValues.getPjAttribute3().toString().equals("X")){
 			addLabel(sheet1, 9, 9, "X", style.sh1tableFormat1);
 		}		
 
@@ -103,11 +101,11 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 10, "4", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 10, 8, 10);
 		addLabel(sheet1, 1, 10, "역설계 권한 허용", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute4().toString().equals("O")) {
+		if(atValues.getPjAttribute4().toString().equals("O")) {
 			addLabel(sheet1, 9, 10, "O", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute4().toString().equals("M")){
+		} else if(atValues.getPjAttribute4().toString().equals("M")){
 			addLabel(sheet1, 9, 10, "△", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute4().toString().equals("X")){
+		} else if(atValues.getPjAttribute4().toString().equals("X")){
 			addLabel(sheet1, 9, 10, "X", style.sh1tableFormat1);
 		}
 		
@@ -115,11 +113,11 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 11, "5", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 11, 8, 11);
 		addLabel(sheet1, 1, 11, "차별적 제한조건 제한", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute5().toString().equals("O")) {
+		if(atValues.getpjAttribute5().toString().equals("O")) {
 			addLabel(sheet1, 9, 11, "O", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute5().toString().equals("M")){
+		} else if(atValues.getpjAttribute5().toString().equals("M")){
 			addLabel(sheet1, 9, 11, "△", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute5().toString().equals("X")){
+		} else if(atValues.getpjAttribute5().toString().equals("X")){
 			addLabel(sheet1, 9, 11, "X", style.sh1tableFormat1);
 		}
 		
@@ -127,9 +125,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 12, "6", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 12, 8, 12);
 		addLabel(sheet1, 1, 12, "특허 무상실시권 부여 (특허소송을 제기하지 않음, 제기시 라이선스 종료)", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute6().toString().equals("X")) {
+		if(atValues.getPjAttribute6().toString().equals("X")) {
 			addLabel(sheet1, 9, 12, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute6().toString().equals("O")){
+		} else if(atValues.getPjAttribute6().toString().equals("O")){
 			addLabel(sheet1, 9, 12, "O", style.sh1tableFormat1);
 		}	
 		
@@ -137,9 +135,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 13, "7", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 13, 8, 13);		
 		addLabel(sheet1, 1, 13, "기술적 보호조치의 보호금지, 설치정보 제공", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute7().toString().equals("X")) {
+		if(atValues.getPjAttribute7().toString().equals("X")) {
 			addLabel(sheet1, 9, 13, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute7().toString().equals("O")){
+		} else if(atValues.getPjAttribute7().toString().equals("O")){
 			addLabel(sheet1, 9, 13, "O", style.sh1tableFormat1);
 		}
 		
@@ -147,9 +145,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 14, "8", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 14, 8, 14);
 		addLabel(sheet1, 1, 14, "고지 (라이선스 사본 포함)", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute8().toString().equals("X")) {
+		if(atValues.getPjAttribute8().toString().equals("X")) {
 			addLabel(sheet1, 9, 14, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute8().toString().equals("O")){
+		} else if(atValues.getPjAttribute8().toString().equals("O")){
 			addLabel(sheet1, 9, 14, "O", style.sh1tableFormat1);
 		}
 		
@@ -157,9 +155,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 15, "9", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 15, 8, 15);		
 		addLabel(sheet1, 1, 15, "변경사항 고지 (라이선스 사본 포함)", style.sh1tableFormat5);		
-		if(atvalues.getpjAttribute9().toString().equals("X")) {
+		if(atValues.getPjAttribute9().toString().equals("X")) {
 			addLabel(sheet1, 9, 15, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute9().toString().equals("O")){
+		} else if(atValues.getPjAttribute9().toString().equals("O")){
 			addLabel(sheet1, 9, 15, "O", style.sh1tableFormat1);
 		}
 				
@@ -167,9 +165,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 16, "10", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 16, 8, 16);
 		addLabel(sheet1, 1, 16, "보증의 부인 및 책임의 제한", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute10().toString().equals("X")) {
+		if(atValues.getPjAttribute10().toString().equals("X")) {
 			addLabel(sheet1, 9, 16, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute10().toString().equals("O")){
+		} else if(atValues.getPjAttribute10().toString().equals("O")){
 			addLabel(sheet1, 9, 16, "O", style.sh1tableFormat1);
 		}	
 				
@@ -177,9 +175,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 17, "11", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 17, 8, 17);
 		addLabel(sheet1, 1, 17, "광고/홍보시 배포자,저작자, 특정상표사용 금지", style.sh1tableFormat5);		
-		if(atvalues.getpjAttribute11().toString().equals("X")) {
+		if(atValues.getPjAttribute11().toString().equals("X")) {
 			addLabel(sheet1, 9, 17, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute11().toString().equals("O")){
+		} else if(atValues.getPjAttribute11().toString().equals("O")){
 			addLabel(sheet1, 9, 17, "O", style.sh1tableFormat1);
 		}
 		
@@ -187,9 +185,9 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 18, "12", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 18, 8, 18);
 		addLabel(sheet1, 1, 18, "원코드와 동일조건 허가", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute12().toString().equals("X")) {
+		if(atValues.getPjAttribute12().toString().equals("X")) {
 			addLabel(sheet1, 9, 18, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute12().toString().equals("O")){
+		} else if(atValues.getPjAttribute12().toString().equals("O")){
 			addLabel(sheet1, 9, 18, "O", style.sh1tableFormat1);
 		}
 				
@@ -197,319 +195,319 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 19, "13", style.sh1tableFormat1);
 		sheet1.mergeCells(1, 19, 8, 19);
 		addLabel(sheet1, 1, 19, "라이선스 적용 범위", style.sh1tableFormat5);
-		if(atvalues.getpjAttribute13().toString().equals("X")) {
+		if(atValues.getPjAttribute13().toString().equals("X")) {
 			addLabel(sheet1, 9, 19, "X", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute13().toString().equals("MPL")){
+		} else if(atValues.getPjAttribute13().toString().equals("MPL")){
 			addLabel(sheet1, 9, 19, "파일\n(per MPL)", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute13().toString().equals("EPL_CPL")){
+		} else if(atValues.getPjAttribute13().toString().equals("EPL_CPL")){
 			addLabel(sheet1, 9, 19, "모듈\n(per CPL)", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute13().toString().equals("LGPL")){
+		} else if(atValues.getPjAttribute13().toString().equals("LGPL")){
 			addLabel(sheet1, 9, 19, "동적 라이브러리\n(per LGPL)", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute13().toString().equals("GPL")){
+		} else if(atValues.getPjAttribute13().toString().equals("GPL")){
 			addLabel(sheet1, 9, 19, "코드 기반의 산출물\n(per GPL)", style.sh1tableFormat1);
-		} else if(atvalues.getpjAttribute13().toString().equals("SLEEPYCAT")){
+		} else if(atValues.getPjAttribute13().toString().equals("SLEEPYCAT")){
 			addLabel(sheet1, 9, 19, "수반 소프트웨어\n(per SleepyCat)", style.sh1tableFormat1);
 		}
 
 		int mergeCount = 9;	int column = 0;	
 		ArrayList<String> checkLicense = new ArrayList<String>();
-		for(int i = 0; i < bomValues.getLicensewithProjectConflict().size(); i++) {			
-			if(!checkLicense.contains(bomValues.getLicensewithProjectConflict().get(i))) {				
-				checkLicense.add(bomValues.getLicensewithProjectConflict().get(i));
+		for(int i = 0; i < bomValues.getLicenseWithProjectConflict().size(); i++) {
+			if(!checkLicense.contains(bomValues.getLicenseWithProjectConflict().get(i))) {
+				checkLicense.add(bomValues.getLicenseWithProjectConflict().get(i));
 				sheet1.setColumnView(10 + column, 33);
-				addLabel(sheet1, 10 + column, 6, bomValues.getLicensewithProjectConflict().get(i), style.sh1tableFormat2);
+				addLabel(sheet1, 10 + column, 6, bomValues.getLicenseWithProjectConflict().get(i), style.sh1tableFormat2);
 				
 				// set component Attribute
-				setCompareLicenseAttribute.setCompareAttribute(bomValues.getLicensewithProjectConflict().get(i));
+				SetCompareLicenseAttribute.setCompareAttribute(bomValues.getLicenseWithProjectConflict().get(i));
 
-				if(getcompareLicenseAttribute.getcoAttribute1().toString().equals(atvalues.getpjAttribute1().toString())) {
-					addLabel(sheet1, 10 + column, 7, getcompareLicenseAttribute.getcoAttribute1(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute1().toString().equals(atValues.getPjAttribute1().toString())) {
+					addLabel(sheet1, 10 + column, 7, getCompareLicenseAttribute.getCoAttribute1(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 7, getcompareLicenseAttribute.getcoAttribute1(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 7, getCompareLicenseAttribute.getCoAttribute1(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 7, "1", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 7, "배포 (바이너리 파일 배포에 의해서만 부여되는 의무사항)", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute1().toString().equals("X")) {
+                    if (atValues.getPjAttribute1().toString().equals("X")) {
                         addLabel(sheet1, 9, 7, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute1().toString().equals("O")) {
+                    else if (atValues.getPjAttribute1().toString().equals("O")) {
                         addLabel(sheet1, 9, 7, "O", style.sh1tableFormat3);
                     }
 					
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute2().toString().equals(atvalues.getpjAttribute2().toString())) {
-					if(getcompareLicenseAttribute.getcoAttribute2().toString().equals("O")) {					
+				if(getCompareLicenseAttribute.getCoAttribute2().toString().equals(atValues.getPjAttribute2().toString())) {
+					if(getCompareLicenseAttribute.getCoAttribute2().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 8, "O", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute2().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute2().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 8, "△", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute2().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute2().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 8, "X", style.sh1tableFormat1);
 					}				
 				} else{				
-					if(getcompareLicenseAttribute.getcoAttribute2().toString().equals("O")) {					
+					if(getCompareLicenseAttribute.getCoAttribute2().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 8, "O", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute2().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute2().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 8, "△", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute2().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute2().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 8, "X", style.sh1tableFormat3);
 					}
 					
 					addLabel(sheet1, 0, 8, "2", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 8, "소스코드 공개/강제적 공유 의무사항", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute2().toString().equals("O")) {
+                    if (atValues.getPjAttribute2().toString().equals("O")) {
                         addLabel(sheet1, 9, 8, "O", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute2().toString().equals("M")) {
+                    else if (atValues.getPjAttribute2().toString().equals("M")) {
                         addLabel(sheet1, 9, 8, "△", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute2().toString().equals("X")) {
+                    else if (atValues.getPjAttribute2().toString().equals("X")) {
                         addLabel(sheet1, 9, 8, "X", style.sh1tableFormat3);      
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute3().toString().equals(atvalues.getpjAttribute3().toString())) {
-					if(getcompareLicenseAttribute.getcoAttribute3().toString().equals("O")) {					
+				if(getCompareLicenseAttribute.getCoAttribute3().toString().equals(atValues.getPjAttribute3().toString())) {
+					if(getCompareLicenseAttribute.getCoAttribute3().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 9, "O", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute3().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute3().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 9, "△", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute3().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute3().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 9, "X", style.sh1tableFormat1);
 					}
 				} else{
-					if(getcompareLicenseAttribute.getcoAttribute3().toString().equals("O")) {					
+					if(getCompareLicenseAttribute.getCoAttribute3().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 9, "O", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute3().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute3().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 9, "△", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute3().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute3().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 9, "X", style.sh1tableFormat3);
 					}						
 					
 					addLabel(sheet1, 0, 9, "3", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 9, "복제 및 수정 권한 허용", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute3().toString().equals("O")) {
+                    if (atValues.getPjAttribute3().toString().equals("O")) {
                         addLabel(sheet1, 9, 9, "O", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute3().toString().equals("M")) {
+                    else if (atValues.getPjAttribute3().toString().equals("M")) {
                         addLabel(sheet1, 9, 9, "△", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute3().toString().equals("X")) {
+                    else if (atValues.getPjAttribute3().toString().equals("X")) {
                         addLabel(sheet1, 9, 9, "X", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute4().toString().equals(atvalues.getpjAttribute4().toString())) {
-					if(getcompareLicenseAttribute.getcoAttribute4().toString().equals("O")) {					
+				if(getCompareLicenseAttribute.getCoAttribute4().toString().equals(atValues.getPjAttribute4().toString())) {
+					if(getCompareLicenseAttribute.getCoAttribute4().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 10, "O", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute4().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute4().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 10, "△", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute4().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute4().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 10, "X", style.sh1tableFormat1);
 					}
 				} else{
-					if(getcompareLicenseAttribute.getcoAttribute4().toString().equals("O")) {					
+					if(getCompareLicenseAttribute.getCoAttribute4().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 10, "O", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute4().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute4().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 10, "△", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute4().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute4().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 10, "X", style.sh1tableFormat3);
 					}
 					
 					addLabel(sheet1, 0, 10, "4", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 10, "역설계 권한 허용", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute4().toString().equals("O")) {
+                    if (atValues.getPjAttribute4().toString().equals("O")) {
                         addLabel(sheet1, 9, 10, "O", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute4().toString().equals("M")) {
+                    else if (atValues.getPjAttribute4().toString().equals("M")) {
                         addLabel(sheet1, 9, 10, "△", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute4().toString().equals("X")) {
+                    else if (atValues.getPjAttribute4().toString().equals("X")) {
                         addLabel(sheet1, 9, 10, "X", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute5().toString().equals(atvalues.getpjAttribute5().toString())) {
-					if(getcompareLicenseAttribute.getcoAttribute5().toString().equals("O")) {					
+				if(getCompareLicenseAttribute.getCoAttribute5().toString().equals(atValues.getpjAttribute5().toString())) {
+					if(getCompareLicenseAttribute.getCoAttribute5().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 11, "O", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute5().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute5().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 11, "△", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute5().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute5().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 11, "X", style.sh1tableFormat1);
 					}
 				} else{
-					if(getcompareLicenseAttribute.getcoAttribute5().toString().equals("O")) {					
+					if(getCompareLicenseAttribute.getCoAttribute5().toString().equals("O")) {
 						addLabel(sheet1, 10 + column, 11, "O", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute5().toString().equals("M")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute5().toString().equals("M")){
 						addLabel(sheet1, 10 + column, 11, "△", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute5().toString().equals("X")){					
+					} else if(getCompareLicenseAttribute.getCoAttribute5().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 11, "X", style.sh1tableFormat3);
 					}						
 					
 					addLabel(sheet1, 0, 11, "5", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 11, "차별적 제한조건 제한", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute5().toString().equals("O")) {
+                    if (atValues.getpjAttribute5().toString().equals("O")) {
                         addLabel(sheet1, 9, 11, "O", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute5().toString().equals("M")) {
+                    else if (atValues.getpjAttribute5().toString().equals("M")) {
                         addLabel(sheet1, 9, 11, "△", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute5().toString().equals("X")) {
+                    else if (atValues.getpjAttribute5().toString().equals("X")) {
                         addLabel(sheet1, 9, 11, "X", style.sh1tableFormat3);
                     }					
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute6().toString().equals(atvalues.getpjAttribute6().toString())) {
-					addLabel(sheet1, 10 + column, 12, getcompareLicenseAttribute.getcoAttribute6(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute6().toString().equals(atValues.getPjAttribute6().toString())) {
+					addLabel(sheet1, 10 + column, 12, getCompareLicenseAttribute.getCoAttribute6(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 12, getcompareLicenseAttribute.getcoAttribute6(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 12, getCompareLicenseAttribute.getCoAttribute6(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 12, "6", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 12, "특허 무상실시권 부여 (특허소송을 제기하지 않음, 제기시 라이선스 종료)", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute6().toString().equals("X")) {
+                    if (atValues.getPjAttribute6().toString().equals("X")) {
                         addLabel(sheet1, 9, 12, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute6().toString().equals("O")) {
+                    else if (atValues.getPjAttribute6().toString().equals("O")) {
                         addLabel(sheet1, 9, 12, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute7().toString().equals(atvalues.getpjAttribute7().toString())) {
-					addLabel(sheet1, 10 + column, 13, getcompareLicenseAttribute.getcoAttribute7(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute7().toString().equals(atValues.getPjAttribute7().toString())) {
+					addLabel(sheet1, 10 + column, 13, getCompareLicenseAttribute.getCoAttribute7(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 13, getcompareLicenseAttribute.getcoAttribute7(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 13, getCompareLicenseAttribute.getCoAttribute7(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 13, "7", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 13, "기술적 보호조치의 보호금지, 설치정보 제공", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute7().toString().equals("X")) {
+                    if (atValues.getPjAttribute7().toString().equals("X")) {
                         addLabel(sheet1, 9, 13, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute7().toString().equals("O")) {
+                    else if (atValues.getPjAttribute7().toString().equals("O")) {
                         addLabel(sheet1, 9, 13, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute8().toString().equals(atvalues.getpjAttribute8().toString())) {
-					addLabel(sheet1, 10 + column, 14, getcompareLicenseAttribute.getcoAttribute8(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute8().toString().equals(atValues.getPjAttribute8().toString())) {
+					addLabel(sheet1, 10 + column, 14, getCompareLicenseAttribute.getCoAttribute8(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 14, getcompareLicenseAttribute.getcoAttribute8(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 14, getCompareLicenseAttribute.getCoAttribute8(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 14, "8", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 14, "고지 (라이선스 사본 포함)", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute8().toString().equals("X")) {
+                    if (atValues.getPjAttribute8().toString().equals("X")) {
                         addLabel(sheet1, 9, 14, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute8().toString().equals("O")) {
+                    else if (atValues.getPjAttribute8().toString().equals("O")) {
                         addLabel(sheet1, 9, 14, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute9().toString().equals(atvalues.getpjAttribute9().toString())) {
-					addLabel(sheet1, 10 + column, 15, getcompareLicenseAttribute.getcoAttribute9(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute9().toString().equals(atValues.getPjAttribute9().toString())) {
+					addLabel(sheet1, 10 + column, 15, getCompareLicenseAttribute.getCoAttribute9(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 15, getcompareLicenseAttribute.getcoAttribute9(), style.sh1tableFormat3);			
+					addLabel(sheet1, 10 + column, 15, getCompareLicenseAttribute.getCoAttribute9(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 15, "9", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 15, "변경사항 고지 (라이선스 사본 포함)", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute9().toString().equals("X")) {
+                    if (atValues.getPjAttribute9().toString().equals("X")) {
                         addLabel(sheet1, 9, 15, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute9().toString().equals("O")) {
+                    else if (atValues.getPjAttribute9().toString().equals("O")) {
                         addLabel(sheet1, 9, 15, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute10().toString().equals(atvalues.getpjAttribute10().toString())) {
-					addLabel(sheet1, 10 + column, 16, getcompareLicenseAttribute.getcoAttribute10(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute10().toString().equals(atValues.getPjAttribute10().toString())) {
+					addLabel(sheet1, 10 + column, 16, getCompareLicenseAttribute.getCoAttribute10(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 16, getcompareLicenseAttribute.getcoAttribute10(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 16, getCompareLicenseAttribute.getCoAttribute10(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 16, "10", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 16, "보증의 부인 및 책임의 제한", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute10().toString().equals("X")) {
+                    if (atValues.getPjAttribute10().toString().equals("X")) {
                         addLabel(sheet1, 9, 16, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute10().toString().equals("O")) {
+                    else if (atValues.getPjAttribute10().toString().equals("O")) {
                         addLabel(sheet1, 9, 16, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute11().toString().equals(atvalues.getpjAttribute11().toString())) {
-					addLabel(sheet1, 10 + column, 17, getcompareLicenseAttribute.getcoAttribute11(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute11().toString().equals(atValues.getPjAttribute11().toString())) {
+					addLabel(sheet1, 10 + column, 17, getCompareLicenseAttribute.getCoAttribute11(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 17, getcompareLicenseAttribute.getcoAttribute11(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 17, getCompareLicenseAttribute.getCoAttribute11(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 17, "11", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 17, "광고/홍보시 배포자,저작자, 특정상표사용 금지", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute11().toString().equals("X")) {
+                    if (atValues.getPjAttribute11().toString().equals("X")) {
                         addLabel(sheet1, 9, 17, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute11().toString().equals("O")) {
+                    else if (atValues.getPjAttribute11().toString().equals("O")) {
                         addLabel(sheet1, 9, 17, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute12().toString().equals(atvalues.getpjAttribute11().toString())) {
-					addLabel(sheet1, 10 + column, 18, getcompareLicenseAttribute.getcoAttribute12(), style.sh1tableFormat1);
+				if(getCompareLicenseAttribute.getCoAttribute12().toString().equals(atValues.getPjAttribute11().toString())) {
+					addLabel(sheet1, 10 + column, 18, getCompareLicenseAttribute.getCoAttribute12(), style.sh1tableFormat1);
 				} else{
-					addLabel(sheet1, 10 + column, 18, getcompareLicenseAttribute.getcoAttribute12(), style.sh1tableFormat3);
+					addLabel(sheet1, 10 + column, 18, getCompareLicenseAttribute.getCoAttribute12(), style.sh1tableFormat3);
 					
 					addLabel(sheet1, 0, 18, "12", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 18, "원코드와 동일조건 허가", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute12().toString().equals("X")) {
+                    if (atValues.getPjAttribute12().toString().equals("X")) {
                         addLabel(sheet1, 9, 18, "X", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute12().toString().equals("O")) {
+                    else if (atValues.getPjAttribute12().toString().equals("O")) {
                         addLabel(sheet1, 9, 18, "O", style.sh1tableFormat3);
                     }
 				}
 				
-				if(getcompareLicenseAttribute.getcoAttribute13().toString().equals(atvalues.getpjAttribute13().toString())) {				
-					if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("X")){
+				if(getCompareLicenseAttribute.getCoAttribute13().toString().equals(atValues.getPjAttribute13().toString())) {
+					if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 19, "X", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("MPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("MPL")){
 						addLabel(sheet1, 10 + column, 19, "파일\n(per MPL)", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("EPL_CPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("EPL_CPL")){
 						addLabel(sheet1, 10 + column, 19, "모듈\n(per CPL)", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("LGPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("LGPL")){
 						addLabel(sheet1, 10 + column, 19, "동적 라이브러리\n(per LGPL)", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("GPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("GPL")){
 						addLabel(sheet1, 10 + column, 19, "코드 기반의 산출물\n(per GPL)", style.sh1tableFormat1);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("SLEEPYCAT")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("SLEEPYCAT")){
 						addLabel(sheet1, 10 + column, 19, "수반 소프트웨어\n(per SleepyCat)", style.sh1tableFormat1);
 					}				
 				} else{
-					if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("X")){
+					if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("X")){
 						addLabel(sheet1, 10 + column, 19, "X", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("MPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("MPL")){
 						addLabel(sheet1, 10 + column, 19, "파일\n(per MPL)", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("EPL_CPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("EPL_CPL")){
 						addLabel(sheet1, 10 + column, 19, "모듈\n(per CPL)", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("LGPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("LGPL")){
 						addLabel(sheet1, 10 + column, 19, "동적 라이브러리\n(per LGPL)", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("GPL")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("GPL")){
 						addLabel(sheet1, 10 + column, 19, "코드 기반의 산출물\n(per GPL)", style.sh1tableFormat3);
-					} else if(getcompareLicenseAttribute.getcoAttribute13().toString().equals("SLEEPYCAT")){
+					} else if(getCompareLicenseAttribute.getCoAttribute13().toString().equals("SLEEPYCAT")){
 						addLabel(sheet1, 10 + column, 19, "수반 소프트웨어\n(per SleepyCat)", style.sh1tableFormat3);
 					}
 					
 					addLabel(sheet1, 0, 19, "13", style.sh1tableFormat3);
                     addLabel(sheet1, 1, 19, "라이선스 적용 범위", style.sh1tableFormat6);
-                    if (atvalues.getpjAttribute13().toString().equals("X")) {
+                    if (atValues.getPjAttribute13().toString().equals("X")) {
                         addLabel(sheet1, 9, 19, "X", style.sh1tableFormat1);
                     }
-                    else if (atvalues.getpjAttribute13().toString().equals("MPL")) {
+                    else if (atValues.getPjAttribute13().toString().equals("MPL")) {
                         addLabel(sheet1, 9, 19, "파일\n(per MPL)", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute13().toString().equals("EPL_CPL")) {
+                    else if (atValues.getPjAttribute13().toString().equals("EPL_CPL")) {
                         addLabel(sheet1, 9, 19, "모듈\n(per CPL)", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute13().toString().equals("LGPL")) {
+                    else if (atValues.getPjAttribute13().toString().equals("LGPL")) {
                         addLabel(sheet1, 9, 19, "동적 라이브러리\n(per LGPL)", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute13().toString().equals("GPL")) {
+                    else if (atValues.getPjAttribute13().toString().equals("GPL")) {
                         addLabel(sheet1, 9, 19, "코드 기반의 산출물\n(per GPL)", style.sh1tableFormat3);
                     }
-                    else if (atvalues.getpjAttribute13().toString().equals("SLEEPYCAT")) {
+                    else if (atValues.getPjAttribute13().toString().equals("SLEEPYCAT")) {
                         addLabel(sheet1, 9, 19, "수반 소프트웨어\n(per SleepyCat)", style.sh1tableFormat3);
                     }
 				}				

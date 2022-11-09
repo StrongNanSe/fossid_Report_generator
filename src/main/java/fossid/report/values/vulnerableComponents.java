@@ -1,17 +1,18 @@
 package fossid.report.values;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class vulnerableComponents {
+public class VulnerableComponents implements Serializable {
 	
-	private static vulnerableComponents values = new vulnerableComponents();
+	private static VulnerableComponents values = new VulnerableComponents();
 
-	public vulnerableComponents() {
+	public VulnerableComponents() {
 	}
 
-	public static vulnerableComponents getInstance() {
+	public static VulnerableComponents getInstance() {
 		return values;
 	}
 

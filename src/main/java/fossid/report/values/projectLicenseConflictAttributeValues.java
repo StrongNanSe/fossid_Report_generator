@@ -1,15 +1,16 @@
 package fossid.report.values;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class projectLicenseConflictAttributeValues {
+public class ProjectLicenseConflictAttributeValues implements Serializable {
 	
-	private static projectLicenseConflictAttributeValues values = new projectLicenseConflictAttributeValues();
+	private static ProjectLicenseConflictAttributeValues values = new ProjectLicenseConflictAttributeValues();
 
-	private projectLicenseConflictAttributeValues() {
+	private ProjectLicenseConflictAttributeValues() {
 	}
 
-	public static projectLicenseConflictAttributeValues getInstance() {
+	public static ProjectLicenseConflictAttributeValues getInstance() {
 		return values;
 	}
 	

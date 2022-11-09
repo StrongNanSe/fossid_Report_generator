@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Base64.Encoder;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -16,16 +15,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import fossid.report.values.loginValues;
-import fossid.report.values.projectValues;
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;
 
-public class getMatchTypes {
+public class GetMatchTypes {
 	
 	public String getmatchtype(String filePath) {	
 		
 	
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 		
 		String matchType = "";
 		

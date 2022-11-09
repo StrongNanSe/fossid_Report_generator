@@ -8,9 +8,11 @@ import jxl.write.BorderLineStyle;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WriteException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class JxlStyle {
-	
+	Logger logger = LogManager.getLogger(JxlStyle.class);
 	WritableFont sh0TitleFont = new WritableFont(WritableFont.ARIAL, 16, WritableFont.BOLD);
 	WritableFont sh0RegularFont = new WritableFont(WritableFont.ARIAL, 12, WritableFont.NO_BOLD);
 	WritableFont sh0RegularBoldFont = new WritableFont(WritableFont.ARIAL, 12, WritableFont.BOLD);	
@@ -139,8 +141,7 @@ public class JxlStyle {
 			
 			
 		} catch (WriteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception Message", e);
 		}
 	}
 }

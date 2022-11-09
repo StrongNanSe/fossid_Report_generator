@@ -13,9 +13,11 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class CreateSheet {
-
+	private final Logger logger = LogManager.getLogger(CreateSheet.class);
 	ExcelValues excelVal = ExcelValues.getInstance();
 	JxlStyle style = new JxlStyle();
 	
@@ -36,8 +38,7 @@ public class CreateSheet {
 		try {
 			props.load(is);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception Message", e);
 		}
 	}
 

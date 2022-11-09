@@ -2,16 +2,18 @@ package fossid.report.getVuln;
 
 import java.util.Iterator;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import fossid.report.values.vulnerableComponents;
+import fossid.report.values.VulnerableComponents;
 
-public class setVulnData {
-
+public class SetVulnData {
+	static Logger logger = LogManager.getLogger(SetVulnData.class);
 	public static void setData(String cliResult, String componentCPE, String componentName, String componentVersion) {
-		vulnerableComponents vulnerableComponent = vulnerableComponents.getInstance();
+		VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 		
 		JSONParser jsonParser = new JSONParser();
         JSONObject jsonObj1, jsonObj2, jsonObj3, jsonObj4, jsonObj5;
@@ -56,20 +58,19 @@ public class setVulnData {
     		            vulnerableComponent.setvulAttackVector(jsonObj5.get("accessVector").toString());
     		            vulnerableComponent.setvulAttackComplexity(jsonObj5.get("accessComplexity").toString());
     		            vulnerableComponent.setvulAttackImpact(jsonObj5.get("availabilityImpact").toString());
-    	                /**	
-                    	System.out.println(componentName+ "  " + componentVersion + "  " + key + "  " +	severity + "  " +                			
+    	                /*
+                    	System.out.println(componentName+ "  " + componentVersion + "  " + key + "  " +	severity + "  " +
     	                		jsonObj5.get("accessVector").toString() + "  " + jsonObj5.get("accessComplexity").toString() + "  " +
     	                		jsonObj5.get("availabilityImpact").toString() + "  ");
-    	                **/	                	
+    	                */
                 	}
             		
             	}
             	
 			}			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}    
+			logger.error("Exception Message", e);
+		}
 		
 	}
 	

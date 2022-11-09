@@ -1,13 +1,15 @@
 package fossid.report.values;
 
-public class loginValues {
+import java.io.Serializable;
 
-	private static loginValues values = new loginValues();
+public class LoginValues implements Serializable {
 
-	public loginValues() {
+	private static LoginValues values = new LoginValues();
+
+	public LoginValues() {
 	}
 
-	public static loginValues getInstance() {
+	public static LoginValues getInstance() {
 		return values;
 	}
 

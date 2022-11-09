@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import fossid.report.values.loginValues;
-import fossid.report.values.projectValues;;
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;;
 
-public class getLoginInfo {
+public class GetLoginInfo {
 	
 	public void getInfo(String protocol, String address, String userName, String apikey) {
 		
@@ -17,8 +17,8 @@ public class getLoginInfo {
 	
 	private void getLogininfo(String protocol, String address, String userName, String apiKey) {
 		
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 		
 		try {
 			

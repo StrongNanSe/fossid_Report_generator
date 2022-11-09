@@ -20,7 +20,7 @@ public class CreateReport {
 		excelVal.setWB();
 		
 		sheet0.writeSheet();
-		sheet1.writeSheet();		
+		sheet1.writeSheet();
 		sheet2.writeSheet();
 		sheet3.writeSheet();
 		sheet4.writeSheet();

@@ -3,32 +3,33 @@ package fossid.report.excel;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 
-import fossid.report.attribute.getProjectLicenseConflict;
-import fossid.report.attribute.setCompareLicenseAttribute;
-import fossid.report.excel.ExcelValues;
-import fossid.report.values.billofmaterialsValues;
-import fossid.report.values.identifiedFilesValues;
-import fossid.report.values.projectValues;
+import fossid.report.attribute.GetProjectLicenseConflict;
+import fossid.report.attribute.SetCompareLicenseAttribute;
+import fossid.report.values.BillOfMaterialsValues;
+import fossid.report.values.IdentifiedFilesValues;
+import fossid.report.values.ProjectValues;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class CreateSheet4 extends CreateSheet{
-	
+	private final Logger logger = LogManager.getLogger(CreateSheet4.class);
+
 	public CreateSheet4(){
 		super();
 	}	
 	
-	billofmaterialsValues bomValues = billofmaterialsValues.getInstance();
+	BillOfMaterialsValues bomValues = BillOfMaterialsValues.getInstance();
 	ExcelValues excelVal = ExcelValues.getInstance();
 	
-	getProjectLicenseConflict projectLicenseConflict = new getProjectLicenseConflict();	
-	setCompareLicenseAttribute setCompareLicenseAttribute = new setCompareLicenseAttribute();	
-	
+	GetProjectLicenseConflict projectLicenseConflict = new GetProjectLicenseConflict();
+
 	WritableSheet sheet4 = excelVal.getSheet4();	
 	
 	public void writeSheet() throws WriteException {
-		System.out.print("Creating sheet 5..");
-		
-		identifiedFilesValues idValues = identifiedFilesValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+		logger.info("Creating sheet 5..");
+
+		IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
+		ProjectValues pValues = ProjectValues.getInstance();
 		
 		sheet4 = excelVal.getWB().createSheet("5. 상세파일 정보", 4);
 		
@@ -59,14 +60,14 @@ public class CreateSheet4 extends CreateSheet{
 		
 		for(int i=0; i < idValues.getfilepath().size(); i++) {
 			if(loopCount%200 == 0) {
-        		System.out.print(".");
-        	}            	
+				logger.info(".");
+        	}
         	loopCount++;
 			
-			if(!idValues.getcomponenetName().get(i).toString().equals(pvalues.getProjectName())) {
+			if(!idValues.getcomponenetName().get(i).toString().equals(pValues.getProjectName())) {
 				
 				// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
-				setCompareLicenseAttribute.setCompareAttribute(idValues.getcomponentLicenseName().get(i));			
+				SetCompareLicenseAttribute.setCompareAttribute(idValues.getcomponentLicenseName().get(i));
 				
 				// value: 0 - no conflict / 1 - project license conflict / 2 - component conflict
 				projectLicenseConflict.projectLicenseConflict(idValues.getcomponentLicenseName().get(i));
@@ -79,7 +80,7 @@ public class CreateSheet4 extends CreateSheet{
 					addLabel(sheet4, 0, 2+row, "프로젝트에 선언된 라이선스와 충돌", style.projectConflict);
 				}
 				
-				if(bomValues.getcomponentConflictLicense().contains(idValues.getcomponentLicenseName().get(i))) {
+				if(bomValues.getComponentConflictLicense().contains(idValues.getcomponentLicenseName().get(i))) {
 					addLabel(sheet4, 0, 2+row, "다른 컴포넌트 라이선스와 충돌", style.componentConflict);
 				}
 				
@@ -91,8 +92,7 @@ public class CreateSheet4 extends CreateSheet{
 				addLabel(sheet4, 6, 2+row, idValues.getcommnet().get(i), style.sh1tableFormat1);				
 				row++;
 			}	
-		}		
-		
-		System.out.println();
+		}
+		logger.info("");
 	}
 }

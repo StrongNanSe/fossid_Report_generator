@@ -1,13 +1,9 @@
 package fossid.report.getdata;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
-
+import fossid.report.values.IdentifiedFilesValues;
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -17,19 +13,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import fossid.report.values.identifiedFilesValues;
-import fossid.report.values.loginValues;
-import fossid.report.values.projectValues;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-public class getNumberofIgnored {
+public class GetNumberOfIgnored {
 	
 	public void setNumber() {
 		int number = 0;
 		
-		identifiedFilesValues idValues = identifiedFilesValues.getInstance();
+		IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
 		
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 		
 		JSONObject dataObject = new JSONObject();
         dataObject.put("username", lvalues.getUsername());
@@ -68,24 +64,12 @@ public class getNumberofIgnored {
 	        
 	        number = jsonArr1.size();        
 	        
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();			
-			System.exit(1);
-		} catch (ClientProtocolException e) {
+		} catch (ParseException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(1);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(1);
-		} catch (ParseException e) {						
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(1);
-		}		
-		
+		}
+
 		idValues.setIgnoredFileCount(number);
 		
 	}

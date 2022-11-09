@@ -6,29 +6,30 @@ import jxl.write.WriteException;
 import java.util.Iterator;
 import java.util.Set;
 
-import fossid.report.excel.ExcelValues;
-import fossid.report.values.billofmaterialsValues;
-import fossid.report.values.identifiedFilesValues;
-import fossid.report.getdata.getNumberofIgnored;
-import fossid.report.values.projectValues;
+import fossid.report.values.BillOfMaterialsValues;
+import fossid.report.values.IdentifiedFilesValues;
+import fossid.report.getdata.GetNumberOfIgnored;
+import fossid.report.values.ProjectValues;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class CreateSheet3 extends CreateSheet{
-	
+	private final Logger logger = LogManager.getLogger(CreateSheet3.class);
 	public CreateSheet3(){
 		super();
 	}
 	
-	identifiedFilesValues idvalues = identifiedFilesValues.getInstance();
-	billofmaterialsValues bomValues = billofmaterialsValues.getInstance();
-	projectValues pvalues = projectValues.getInstance();
+	IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
+	BillOfMaterialsValues bomValues = BillOfMaterialsValues.getInstance();
+	ProjectValues pValues = ProjectValues.getInstance();
 	ExcelValues excelVal = ExcelValues.getInstance();
 	WritableSheet sheet3 = excelVal.getSheet3();
 		
-	getNumberofIgnored ignoredNumber = new getNumberofIgnored();
+	GetNumberOfIgnored ignoredNumber = new GetNumberOfIgnored();
 
 	public void writeSheet() throws WriteException {
-		System.out.println("Creating sheet 4..");		
-		
+		logger.info("Creating sheet 4..");
+
 		sheet3 = excelVal.getWB().createSheet("4. 라이선스 비율", 3);
 		
 		sheet3.setColumnView(0, 60);
@@ -48,28 +49,26 @@ public class CreateSheet3 extends CreateSheet{
 		
 		int projectRowCount = 0;
 		
-		Set set = bomValues.getUlicenseFileCount().keySet();
-		Iterator entries = set.iterator();
-		while(entries.hasNext()){			
-			
+		Set<String> set = bomValues.getULicenseFileCount().keySet();
+		for (String key : set) {
+
 			sheet3.setRowView(projectRowCount + 2, 500);
-			
-			String key = (String)entries.next();			
-			addLabel(sheet3, 0, projectRowCount + 2, key, style.sh1tableFormat1);			
-			addLabel(sheet3, 1, projectRowCount + 2, bomValues.getlicenseMatchType().get(key), style.sh1tableFormat1);
-			addLabel(sheet3, 2, projectRowCount + 2, Integer.toString(bomValues.getUlicenseFileCount().get(key)), style.sh1tableFormat1);
-			
-			int alicenseCount = Integer.parseInt(bomValues.getUlicenseFileCount().get(key).toString());
-			double percent = ((double) alicenseCount / idvalues.getAnalzyedFileCount())* 100;
+
+			addLabel(sheet3, 0, projectRowCount + 2, key, style.sh1tableFormat1);
+			addLabel(sheet3, 1, projectRowCount + 2, bomValues.getLicenseMatchType().get(key), style.sh1tableFormat1);
+			addLabel(sheet3, 2, projectRowCount + 2, Integer.toString(bomValues.getULicenseFileCount().get(key)), style.sh1tableFormat1);
+
+			int licenseCount = Integer.parseInt(bomValues.getULicenseFileCount().get(key).toString());
+			double percent = ((double) licenseCount / idValues.getAnalzyedFileCount()) * 100;
 			addLabel(sheet3, 3, projectRowCount + 2, String.format("%.2f", percent) + "%", style.sh1tableFormat1);
-			
-			projectRowCount++;			
+
+			projectRowCount++;
 		}					
 				 
 		sheet3.setRowView(projectRowCount + 2, 500);
-		addLabel(sheet3, 0, projectRowCount + 2, pvalues.getProjectLicense(), style.sh1tableFormat1);
-		int totalCount = idvalues.getfileTotalCount() - idvalues.getIgnoredCount() - idvalues.getIdentifiedFileCount();		
-		double percent = ((double) totalCount / (double)(idvalues.getfileTotalCount() - idvalues.getIgnoredCount()))* 100;
+		addLabel(sheet3, 0, projectRowCount + 2, pValues.getProjectLicense(), style.sh1tableFormat1);
+		int totalCount = idValues.getfileTotalCount() - idValues.getIgnoredCount() - idValues.getIdentifiedFileCount();
+		double percent = ((double) totalCount / (double)(idValues.getfileTotalCount() - idValues.getIgnoredCount()))* 100;
 		addLabel(sheet3, 1, projectRowCount + 2, "N/A", style.sh1tableFormat1);
 		addLabel(sheet3, 2, projectRowCount + 2, Integer.toString(totalCount), style.sh1tableFormat1);
 		addLabel(sheet3, 3, projectRowCount + 2, String.format("%.2f", percent) + "%", style.sh1tableFormat1);
@@ -78,7 +77,7 @@ public class CreateSheet3 extends CreateSheet{
 		addLabel(sheet3, 0, projectRowCount + 3, "합계", style.sh1tableFormat1);		
 		addLabel(sheet3, 1, projectRowCount + 3, "", style.sh1tableFormat1);
 		sheet3.mergeCells(0, projectRowCount + 3, 1, projectRowCount + 3);
-		addLabel(sheet3, 2, projectRowCount + 3, Integer.toString(idvalues.getfileTotalCount() - idvalues.getIgnoredCount()), style.sh1tableFormat1);
+		addLabel(sheet3, 2, projectRowCount + 3, Integer.toString(idValues.getfileTotalCount() - idValues.getIgnoredCount()), style.sh1tableFormat1);
 		addLabel(sheet3, 3, projectRowCount + 3, "100%", style.sh1tableFormat1);
 	}
 }

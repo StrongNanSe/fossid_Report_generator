@@ -1,120 +1,122 @@
 package fossid.report.values;
 
 
-// This clss is to set project license attirbutes
-public class projectLicenseAttributeValues {
-	
-	private static projectLicenseAttributeValues values = new projectLicenseAttributeValues();
+import java.io.Serializable;
 
-	private projectLicenseAttributeValues() {
+// This class is to set project license attributes
+public class ProjectLicenseAttributeValues implements Serializable {
+	
+	private static final ProjectLicenseAttributeValues values = new ProjectLicenseAttributeValues();
+
+	private ProjectLicenseAttributeValues() {
 	}
 
-	public static projectLicenseAttributeValues getInstance() {
+	public static ProjectLicenseAttributeValues getInstance() {
 		return values;
 	}
 	
-	private String pjArribute1;
-	private String pjArribute2;
-	private String pjArribute3;
-	private String pjArribute4;
-	private String pjArribute5;
-	private String pjArribute6;
-	private String pjArribute7;
-	private String pjArribute8;
-	private String pjArribute9;
-	private String pjArribute10;
-	private String pjArribute11;
-	private String pjArribute12;
-	private String pjArribute13;
+	private String pjAttribute1;
+	private String pjAttribute2;
+	private String pjAttribute3;
+	private String pjAttribute4;
+	private String pjAttribute5;
+	private String pjAttribute6;
+	private String pjAttribute7;
+	private String pjAttribute8;
+	private String pjAttribute9;
+	private String pjAttribute10;
+	private String pjAttribute11;
+	private String pjAttribute12;
+	private String pjAttribute13;
 	
-	public String getpjAttribute1() {
-		return pjArribute1;
+	public String getPjAttribute1() {
+		return pjAttribute1;
 	}
-	public void setpjAttribute1(String attribute) {
-		this.pjArribute1 = attribute;
-	}
-	
-	public String getpjAttribute2() {
-		return pjArribute2;
-	}
-	public void setpjAttribute2(String attribute) {
-		this.pjArribute2 = attribute;
+	public void setPjAttribute1(String attribute) {
+		this.pjAttribute1 = attribute;
 	}
 	
-	public String getpjAttribute3() {
-		return pjArribute3;
+	public String getPjAttribute2() {
+		return pjAttribute2;
 	}
-	public void setpjAttribute3(String attribute) {
-		this.pjArribute3 = attribute;
+	public void setPjAttribute2(String attribute) {
+		this.pjAttribute2 = attribute;
 	}
 	
-	public String getpjAttribute4() {
-		return pjArribute4;
+	public String getPjAttribute3() {
+		return pjAttribute3;
 	}
-	public void setpjAttribute4(String attribute) {
-		this.pjArribute4 = attribute;
+	public void setPjAttribute3(String attribute) {
+		this.pjAttribute3 = attribute;
+	}
+	
+	public String getPjAttribute4() {
+		return pjAttribute4;
+	}
+	public void setPjAttribute4(String attribute) {
+		this.pjAttribute4 = attribute;
 	}
 	
 	public String getpjAttribute5() {
-		return pjArribute5;
+		return pjAttribute5;
 	}
-	public void setpjAttribute5(String attribute) {
-		this.pjArribute5 = attribute;
-	}
-	
-	public String getpjAttribute6() {
-		return pjArribute6;
-	}
-	public void setpjAttribute6(String attribute) {
-		this.pjArribute6 = attribute;
+	public void setPjAttribute5(String attribute) {
+		this.pjAttribute5 = attribute;
 	}
 	
-	public String getpjAttribute7() {
-		return pjArribute7;
+	public String getPjAttribute6() {
+		return pjAttribute6;
 	}
-	public void setpjAttribute7(String attribute) {
-		this.pjArribute7 = attribute;
-	}
-	
-	public String getpjAttribute8() {
-		return pjArribute8;
-	}
-	public void setpjAttribute8(String attribute) {
-		this.pjArribute8 = attribute;
+	public void setPjAttribute6(String attribute) {
+		this.pjAttribute6 = attribute;
 	}
 	
-	public String getpjAttribute9() {
-		return pjArribute9;
+	public String getPjAttribute7() {
+		return pjAttribute7;
 	}
-	public void setpjAttribute9(String attribute) {
-		this.pjArribute9 = attribute;
-	}
-	
-	public String getpjAttribute10() {
-		return pjArribute10;
-	}
-	public void setpjAttribute10(String attribute) {
-		this.pjArribute10 = attribute;
+	public void setPjAttribute7(String attribute) {
+		this.pjAttribute7 = attribute;
 	}
 	
-	public String getpjAttribute11() {
-		return pjArribute11;
+	public String getPjAttribute8() {
+		return pjAttribute8;
 	}
-	public void setpjAttribute11(String attribute) {
-		this.pjArribute11 = attribute;
-	}
-	
-	public String getpjAttribute12() {
-		return pjArribute12;
-	}
-	public void setpjAttribute12(String attribute) {
-		this.pjArribute12 = attribute;
+	public void setPjAttribute8(String attribute) {
+		this.pjAttribute8 = attribute;
 	}
 	
-	public String getpjAttribute13() {
-		return pjArribute13;
+	public String getPjAttribute9() {
+		return pjAttribute9;
 	}
-	public void setpjAttribute13(String attribute) {
-		this.pjArribute13 = attribute;
+	public void setPjAttribute9(String attribute) {
+		this.pjAttribute9 = attribute;
+	}
+	
+	public String getPjAttribute10() {
+		return pjAttribute10;
+	}
+	public void setPjAttribute10(String attribute) {
+		this.pjAttribute10 = attribute;
+	}
+	
+	public String getPjAttribute11() {
+		return pjAttribute11;
+	}
+	public void setPjAttribute11(String attribute) {
+		this.pjAttribute11 = attribute;
+	}
+	
+	public String getPjAttribute12() {
+		return pjAttribute12;
+	}
+	public void setPjAttribute12(String attribute) {
+		this.pjAttribute12 = attribute;
+	}
+	
+	public String getPjAttribute13() {
+		return pjAttribute13;
+	}
+	public void setPjAttribute13(String attribute) {
+		this.pjAttribute13 = attribute;
 	}
 }

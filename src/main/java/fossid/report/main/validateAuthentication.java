@@ -1,8 +1,6 @@
 package fossid.report.main;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
+import fossid.report.values.LoginValues;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,13 +9,14 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import fossid.report.values.loginValues;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-public class validateAuthentication {
+public class ValidateAuthentication {
 	
-	public static void validateauthentication() {
+	public static void validateAuthentication() {
 		
-		loginValues lvalues = loginValues.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
 		
 		JSONObject dataObject = new JSONObject();
         dataObject.put("username", lvalues.getUsername());
@@ -53,7 +52,7 @@ public class validateAuthentication {
 			JSONParser jsonParser = new JSONParser();
 	        JSONObject jsonObj = (JSONObject) jsonParser.parse(result.toString());	        
 	        
-	        // set false if valiation is failed 
+	        // set false if validation is failed
 	        if(jsonObj.get("status").equals("0")){
 	        	System.out.println("Please, check the fossid.username/fossid.apikey in the config.properties file or --username/--apikey values");
 	        }

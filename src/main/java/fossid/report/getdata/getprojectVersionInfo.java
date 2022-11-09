@@ -1,13 +1,7 @@
 package fossid.report.getdata;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
-
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -17,15 +11,22 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import fossid.report.values.loginValues;
-import fossid.report.values.projectValues;;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Properties;
 
-public class getprojectVersionInfo {
+;
+
+public class GetProjectVersionInfo {
 	
 	public void getInfo(String projectName, String scanName, String license) {
 		
 		try {
-			projectValues pvalues = projectValues.getInstance();
+			ProjectValues pvalues = ProjectValues.getInstance();
 			Properties props = new Properties();
 			InputStream is = getClass().getResourceAsStream("/config.properties");
 			props.load(is);
@@ -66,8 +67,8 @@ public class getprojectVersionInfo {
 	
 	private void getProjectId() {
 
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 				
 		// create json to call FOSSID project/list_projects api 		
 		JSONObject dataObject = new JSONObject();
@@ -104,7 +105,7 @@ public class getprojectVersionInfo {
 			//System.out.println("result: " + result.toString());
 			
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObj = (JSONObject) jsonParser.parse(result.toString());
+            JSONObject jsonObj = (JSONObject) jsonParser.parse(result);
             JSONArray dataArray = (JSONArray) jsonObj.get("data");
             
             ArrayList<String> projectList = new ArrayList<String>();
@@ -129,8 +130,8 @@ public class getprojectVersionInfo {
 	
 	private void getVersionId() {
 
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 				
 		// create json to call FOSSID projects/get_all_scans api 		
 		JSONObject dataObject = new JSONObject();
@@ -191,8 +192,8 @@ public class getprojectVersionInfo {
 	
 	private void checkprojectVersion() {
 
-		loginValues lvalues = loginValues.getInstance();
-		projectValues pvalues = projectValues.getInstance();			
+		LoginValues lvalues = LoginValues.getInstance();
+		ProjectValues pvalues = ProjectValues.getInstance();
 		
 		JSONObject dataObject = new JSONObject();
         dataObject.put("username", lvalues.getUsername());
