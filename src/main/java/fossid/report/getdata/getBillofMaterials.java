@@ -11,10 +11,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 
@@ -30,12 +28,12 @@ public class GetBillOfMaterials {
 		IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
 		BufferedReader br = null;
 		
-		LoginValues lvalues = LoginValues.getInstance();
+		LoginValues lValues = LoginValues.getInstance();
 		ProjectValues pValues = ProjectValues.getInstance();
 		
 		JSONObject dataObject = new JSONObject();
-        dataObject.put("username", lvalues.getUsername());
-        dataObject.put("key", lvalues.getApikey());
+        dataObject.put("username", lValues.getUsername());
+        dataObject.put("key", lValues.getApikey());
         dataObject.put("scan_code", pValues.getVersionId());
 		
 		JSONObject rootObject = new JSONObject();
@@ -43,7 +41,7 @@ public class GetBillOfMaterials {
         rootObject.put("action", "get_scan_identified_components");
 		rootObject.put("data", dataObject);	
 				
-		HttpPost httpPost = new HttpPost(lvalues.getServerApiUri());
+		HttpPost httpPost = new HttpPost(lValues.getServerApiUri());
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		
 		try {
@@ -59,15 +57,17 @@ public class GetBillOfMaterials {
 			
 			br = new BufferedReader(new InputStreamReader(httpClientResponse.getEntity().getContent(), "UTF-8"));
 			String result = br.readLine();
-			
-			//System.out.println("bom"+result.toString());
-						
+
+			logger.debug("bom"+ result);
+
 	        JSONParser jsonParser = new JSONParser();
 	        //JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());	        
 	        //JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
 	        
-	        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
-	        //System.out.println("object1: " + jsonObj1.toString());	        
+	        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result);
+
+			logger.debug("object1: " + jsonObj1.toString());
+
 	        if(jsonObj1.toString().contains("You are not the creator of the scan nor part of the scan project. Please assign yourself as a project member.")) {
 				throw new Exception("You are not the creator of the scan nor part of the scan project. Please assign yourself as a project member.");
 	        }
@@ -120,9 +120,7 @@ public class GetBillOfMaterials {
 
 					url = ("Unspecified");
 
-					if(tempObj.get("url") == null || tempObj.get("supplier_url") == null || tempObj.get("community_url") == null || tempObj.get("download_url") == null) {
-
-					} else {
+					if(!(tempObj.get("url") == null || tempObj.get("supplier_url") == null || tempObj.get("community_url") == null || tempObj.get("download_url") == null)) {
 						if(!tempObj.get("community_url").toString().isEmpty()) {
 							url = (tempObj.get("community_url").toString());
 						} else if(!tempObj.get("supplier_url").toString().isEmpty()) {
@@ -133,7 +131,6 @@ public class GetBillOfMaterials {
 							url = tempObj.get("download_url").toString();
 						}
 					}
-
 
 					bomValues.setUComponentHomepage(url);
 
@@ -179,10 +176,8 @@ public class GetBillOfMaterials {
         	        	
         	idValues.setpatentIssueFileCount(patentIssueFileCount);
 			
-		} catch (ParseException | IOException e) {
-			logger.info("Exception Message", e);
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			logger.info("Exception Message", e);
 		} finally {
 			try {
 				if (br != null) {

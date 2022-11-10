@@ -1,10 +1,5 @@
 package fossid.report.excel;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-
 import fossid.report.attribute.GetComponentLicenseConflict;
 import fossid.report.attribute.GetProjectLicenseConflict;
 import fossid.report.attribute.SetCompareComponentLicenseAttribute;
@@ -12,11 +7,14 @@ import fossid.report.attribute.SetCompareLicenseAttribute;
 import fossid.report.getdata.GetNumberOfIgnored;
 import fossid.report.values.BillOfMaterialsValues;
 import fossid.report.values.IdentifiedFilesValues;
-import fossid.report.values.LoginValues;
 import fossid.report.values.ProjectValues;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 
 public class CreateSheet0 extends CreateSheet{
@@ -25,7 +23,6 @@ public class CreateSheet0 extends CreateSheet{
 		super();
 	}
 
-	LoginValues lvalues = LoginValues.getInstance();
 	ProjectValues pValues = ProjectValues.getInstance();
 	IdentifiedFilesValues idValues = IdentifiedFilesValues.getInstance();
 	ExcelValues excelVal = ExcelValues.getInstance();
@@ -175,8 +172,8 @@ public class CreateSheet0 extends CreateSheet{
 		GetProjectLicenseConflict projectLicenseConflict = new GetProjectLicenseConflict();
 		GetComponentLicenseConflict componentLicenseConflict = new GetComponentLicenseConflict();
 
-		String key = null;
-		int value = 0;
+		String key;
+		int value;
 
 		for(int i = 0; i < bomValues.getUComponentName().size(); i++) {
 
@@ -221,7 +218,6 @@ public class CreateSheet0 extends CreateSheet{
 				bomValues.setLicenseWithProjectConflict(bomValues.getUComponentLicenseName().get(i));
 			}
 		}
-		logger.info("End getComponentConflictCount");
 	}
 }
 

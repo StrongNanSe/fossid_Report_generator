@@ -7,6 +7,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,13 +24,15 @@ import java.util.Properties;
 ;
 
 public class GetProjectVersionInfo {
+	private final Logger logger = LogManager.getLogger(GetProjectVersionInfo.class);
 	
 	public void getInfo(String projectName, String scanName, String license) {
-		
+		InputStream is = null;
+
 		try {
-			ProjectValues pvalues = ProjectValues.getInstance();
+			ProjectValues pValues = ProjectValues.getInstance();
 			Properties props = new Properties();
-			InputStream is = getClass().getResourceAsStream("/config.properties");
+			is = getClass().getResourceAsStream("/config.properties");
 			props.load(is);
 			
 			// To change encoding to UTF-8
@@ -36,39 +40,43 @@ public class GetProjectVersionInfo {
 			
 			if(projectName.equals("")) {
 				encoding = new String(props.getProperty("fossid.project").getBytes("iso-8859-1"), "UTF-8");			
-				pvalues.setProjectName(encoding);
+				pValues.setProjectName(encoding);
 			} else {
-				pvalues.setProjectName(projectName);
+				pValues.setProjectName(projectName);
 			}
 			
 			if(scanName.equals("")) {
 				encoding = new String(props.getProperty("fossid.scan").getBytes("iso-8859-1"), "UTF-8");			
-				pvalues.setVersionName(encoding);
+				pValues.setVersionName(encoding);
 			} else {
-				pvalues.setVersionName(scanName);
+				pValues.setVersionName(scanName);
 			}
 			
 			if(license.equals("")) {
-				pvalues.setProjectLicense(props.getProperty("fossid.license"));
+				pValues.setProjectLicense(props.getProperty("fossid.license"));
 			} else {
-				pvalues.setProjectLicense(license);
+				pValues.setProjectLicense(license);
 			}
-			
-						
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception Message", e);
+		} finally {
+			try {
+				if (is != null) {
+					is.close();
+				}
+			} catch (Exception e) {
+				logger.error("Exception Message", e);
+			}
 		}
 		
 		getProjectId();
 		//getVersionId();
-		checkprojectVersion();
+		checkProjectVersion();
 	}
 	
 	private void getProjectId() {
-
 		LoginValues lvalues = LoginValues.getInstance();
-		ProjectValues pvalues = ProjectValues.getInstance();
+		ProjectValues pValues = ProjectValues.getInstance();
 				
 		// create json to call FOSSID project/list_projects api 		
 		JSONObject dataObject = new JSONObject();
@@ -81,7 +89,8 @@ public class GetProjectVersionInfo {
 		rootObject.put("data", dataObject);		
 		
 		HttpPost httpPost = new HttpPost(lvalues.getServerApiUri());
-		HttpClient httpClient = HttpClientBuilder.create().build();				
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		BufferedReader br = null;
 		
 		try {
 
@@ -90,115 +99,121 @@ public class GetProjectVersionInfo {
 			httpPost.setEntity(entity);
 			
 			HttpResponse httpClientResponse = httpClient.execute(httpPost);			
-			
-			
+
 			if (httpClientResponse.getStatusLine().getStatusCode() != 200) {
-				System.out.println("Failed : HTTP Error code : " + httpClientResponse.getStatusLine().getStatusCode());
-				System.exit(1);
-			}	
-								
+				throw new Exception("Failed : HTTP Error code : " + httpClientResponse.getStatusLine().getStatusCode());
+			}
 			
-			BufferedReader br = new BufferedReader(
+			br = new BufferedReader(
 					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
 			String result = br.readLine();
-			
-			//System.out.println("result: " + result.toString());
-			
+
+			logger.debug("result: " + result.toString());
+
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj = (JSONObject) jsonParser.parse(result);
             JSONArray dataArray = (JSONArray) jsonObj.get("data");
             
             ArrayList<String> projectList = new ArrayList<String>();
             //set projectid
-            for(int i=0; i < dataArray.size(); i++) {
-                JSONObject tempObj = (JSONObject) dataArray.get(i);                                
-                if(tempObj.get("project_name").equals(pvalues.getProjectName())) {
-                	pvalues.setProjectId(tempObj.get("project_code").toString());
-                }            
-                projectList.add(tempObj.get("project_name").toString());
-            }
+			for (Object o : dataArray) {
+				JSONObject tempObj = (JSONObject) o;
+				if (tempObj.get("project_name").equals(pValues.getProjectName())) {
+					pValues.setProjectId(tempObj.get("project_code").toString());
+				}
+				projectList.add(tempObj.get("project_name").toString());
+			}
             
-            if(!projectList.contains(pvalues.getProjectName())){
-            	System.out.println("Please, check the fossid.project in the config.properties file");
+            if(!projectList.contains(pValues.getProjectName())){
+				logger.warn("Please, check the fossid.project in the config.properties file");
             }
             
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}		
+			logger.error("Exception Message", e);
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
+				}
+			} catch (Exception e) {
+				logger.error("Exception Message", e);
+			}
+		}
 	}
 	
 	private void getVersionId() {
 
-		LoginValues lvalues = LoginValues.getInstance();
-		ProjectValues pvalues = ProjectValues.getInstance();
+		LoginValues lValues = LoginValues.getInstance();
+		ProjectValues pValues = ProjectValues.getInstance();
 				
 		// create json to call FOSSID projects/get_all_scans api 		
 		JSONObject dataObject = new JSONObject();
-        dataObject.put("username", lvalues.getUsername());
-        dataObject.put("key", lvalues.getApikey());
-        dataObject.put("project_code", pvalues.getProjectId());
+        dataObject.put("username", lValues.getUsername());
+        dataObject.put("key", lValues.getApikey());
+        dataObject.put("project_code", pValues.getProjectId());
         
 		JSONObject rootObject = new JSONObject();
         rootObject.put("group", "scans");
         rootObject.put("action", "list_scans");        
 		rootObject.put("data", dataObject);		
 		
-		HttpPost httpPost = new HttpPost(lvalues.getServerApiUri());
-		HttpClient httpClient = HttpClientBuilder.create().build();				
+		HttpPost httpPost = new HttpPost(lValues.getServerApiUri());
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		BufferedReader br = null;
 		
 		try {
-			
 			StringEntity entity = new StringEntity(rootObject.toString());
 			httpPost.addHeader("content-type", "application/json");
 			httpPost.setEntity(entity);
 			
 			HttpResponse httpClientResponse = httpClient.execute(httpPost);		
-			
-			
+
 			if (httpClientResponse.getStatusLine().getStatusCode() != 200) {
-				System.out.println("Failed : HTTP Error code : " + httpClientResponse.getStatusLine().getStatusCode());
-				System.exit(1);
-			}	
-								
-			
-			BufferedReader br = new BufferedReader(
+				throw new Exception("Failed : HTTP Error code : " + httpClientResponse.getStatusLine().getStatusCode());
+			}
+
+			br = new BufferedReader(
 					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
 			String result = br.readLine();
-			
-			//System.out.println("result: " + result.toString());
-			
+
+			logger.debug("result: " + result);
+
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
             JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
-            Iterator iter = jsonObj2.keySet().iterator();
-            
-            // set key value of jsonObj2 and run loop while(until) iter has value            
-            while(iter.hasNext()) {
-            	// set key value to key
-            	String key = (String) iter.next();
-            	// get values from key
-            	JSONObject tempObj = (JSONObject) jsonObj2.get(key);            	
-                if(tempObj.get("name").equals(pvalues.getVersionName())) {
-                	pvalues.setVersionId(tempObj.get("code").toString());
-                }
-            }
-            
+
+			// set key value of jsonObj2 and run loop while(until) iter has value
+			for (Object o : jsonObj2.keySet()) {
+				// set key value to key
+				String key = (String) o;
+				// get values from key
+				JSONObject tempObj = (JSONObject) jsonObj2.get(key);
+				if (tempObj.get("name").equals(pValues.getVersionName())) {
+					pValues.setVersionId(tempObj.get("code").toString());
+				}
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}		
+			logger.error("Exception Message", e);
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
+				}
+			} catch (Exception e) {
+				logger.error("Exception Message", e);
+			}
+		}
 	}
 	
-	private void checkprojectVersion() {
+	private void checkProjectVersion() {
 
 		LoginValues lvalues = LoginValues.getInstance();
-		ProjectValues pvalues = ProjectValues.getInstance();
+		ProjectValues pValues = ProjectValues.getInstance();
 		
 		JSONObject dataObject = new JSONObject();
         dataObject.put("username", lvalues.getUsername());
         dataObject.put("key", lvalues.getApikey());
-        dataObject.put("project_code", pvalues.getProjectId());
+        dataObject.put("project_code", pValues.getProjectId());
 		
 		JSONObject rootObject = new JSONObject();
         rootObject.put("group", "projects");
@@ -207,6 +222,7 @@ public class GetProjectVersionInfo {
 		
 		HttpPost httpPost = new HttpPost(lvalues.getServerApiUri());
 		HttpClient httpClient = HttpClientBuilder.create().build();
+		BufferedReader br = null;
 		
 		try {			
 			// TO set UTF-8 Entity
@@ -218,22 +234,19 @@ public class GetProjectVersionInfo {
 			HttpResponse httpClientResponse = httpClient.execute(httpPost);	
 			
 			if (httpClientResponse.getStatusLine().getStatusCode() != 200) {
-				
-				
-				System.out.println("Please, check " + pvalues.getVersionName() + " is mapped to " + pvalues.getProjectName() + " or ");
-				System.out.println("check " + lvalues.getUsername() + " is assigned to " + pvalues.getProjectName());				
-				
-				System.out.println("Failed : HTTP Error code : " + httpClientResponse.getStatusLine().getStatusCode());
-				System.exit(1);
-			}					
+				throw new Exception("Please, check " + pValues.getVersionName() + " is mapped to "
+						+ pValues.getProjectName() + "or \ncheck " + lvalues.getUsername() + " is assigned to "
+						+ pValues.getProjectName() + "\nFailed : HTTP Error code : "
+						+ httpClientResponse.getStatusLine().getStatusCode());
+			}
 			
-			BufferedReader br = new BufferedReader(
+			br = new BufferedReader(
 					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
 			String result = br.readLine();
-			
-			//System.out.println("result2: " + result.toString());
-			//System.out.println("rootObject" + rootObject.toString());
-			
+
+			logger.debug("result2: " + result.toString());
+			logger.debug("rootObject" + rootObject.toString());
+
 			JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
             
@@ -255,30 +268,35 @@ public class GetProjectVersionInfo {
                 	String key = (String) iter.next();
                 	// get values from key
                 	JSONObject tempObj = (JSONObject) jsonObj2.get(key);
-                	if(pvalues.getVersionName().equals(tempObj.get("name"))) {
-                		pvalues.setVersionId(tempObj.get("code").toString());
+                	if(pValues.getVersionName().equals(tempObj.get("name"))) {
+                		pValues.setVersionId(tempObj.get("code").toString());
                 	}   
                 	codeList.add(tempObj.get("code").toString());
                 }	        
                 
-                if(!codeList.contains(pvalues.getVersionId())) {
-                	System.out.println("Please, check the fossid.scanname in the config.properties file or assign a scan to a Project on FOSSID");
-                } 
+                if(!codeList.contains(pValues.getVersionId())) {
+					logger.warn("Please, check the fossid.scanname in the config.properties file or assign a scan to a Project on FOSSID");
+                }
             } else if (arrayOrObject.equals("[")){
-            	
-            	JSONArray dataArray = (JSONArray) jsonObj1.get("data");      	        
-      	        JSONObject data = new JSONObject();      	                   			
-      	        JSONObject tempObj = (JSONObject) dataArray.get(0);
+            	JSONArray dataArray = (JSONArray) jsonObj1.get("data");
+				JSONObject tempObj = (JSONObject) dataArray.get(0);
       	        
-      	        if(pvalues.getVersionName().equals(tempObj.get("name"))) {
-      	        	pvalues.setVersionId(tempObj.get("code").toString());
+      	        if(pValues.getVersionName().equals(tempObj.get("name"))) {
+      	        	pValues.setVersionId(tempObj.get("code").toString());
       	        } else {
-                   	System.out.println("Please, check the fossid.scanname in the config.properties file or assign a scan to a Project on FOSSID");
+				    logger.warn("Please, check the fossid.scanname in the config.properties file or assign a scan to a Project on FOSSID");
       	        }
             }
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}		
+			logger.error("Exception Message",e);
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
+				}
+			} catch (Exception e) {
+				logger.error("Exception Message", e);
+			}
+		}
 	}
 }

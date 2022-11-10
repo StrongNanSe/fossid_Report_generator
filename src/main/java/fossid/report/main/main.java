@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 public class Main {
 	private static final Logger logger = LogManager.getLogger(Main.class);
 	private static final long start = System.currentTimeMillis();
+	private static long end;
 	public static void main(String[] args) {
 		try {
 			
@@ -98,11 +99,11 @@ public class Main {
 
 			PrintInfo.endFOSSID();
 
-			long end = System.currentTimeMillis();
+			end = System.currentTimeMillis();
+			logger.info("실행시간 : " + (end - start)/60000 + "m" + ((end - start)%60000)/1000 + "s");
 		} catch (WriteException e) {
 			logger.error("Exception Message", e);
-		} finally {
-			logger.info("실행시간 : " + (System.currentTimeMillis() - start)/1000 + "s");
+			System.exit(1);
 		}
 	}
 }

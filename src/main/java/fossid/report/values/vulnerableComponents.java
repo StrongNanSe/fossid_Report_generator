@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class VulnerableComponents implements Serializable {
 	
-	private static VulnerableComponents values = new VulnerableComponents();
+	private static final VulnerableComponents values = new VulnerableComponents();
 
 	public VulnerableComponents() {
 	}
