@@ -1,27 +1,28 @@
 package fossid.report.getdata;
 
+import fossid.report.values.LoginValues;
+import fossid.report.values.ProjectValues;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import fossid.report.values.LoginValues;
-import fossid.report.values.ProjectValues;;
+;
 
 public class GetLoginInfo {
-	
+	private final Logger logger = LogManager.getLogger(GetLoginInfo.class);
+
 	public void getInfo(String protocol, String address, String userName, String apikey) {
-		
-		getLogininfo(protocol, address, userName, apikey);
-		
+		getLoginInfo(protocol, address, userName, apikey);
 	}
 	
-	private void getLogininfo(String protocol, String address, String userName, String apiKey) {
-		
+	private void getLoginInfo(String protocol, String address, String userName, String apiKey) {
 		LoginValues lvalues = LoginValues.getInstance();
-		ProjectValues pvalues = ProjectValues.getInstance();
+		ProjectValues pValues = ProjectValues.getInstance();
 		
 		try {
-			
 			Properties props = new Properties();
 			InputStream is = getClass().getResourceAsStream("/config.properties");
 			props.load(is);
@@ -86,13 +87,8 @@ public class GetLoginInfo {
 			
 			lvalues.setUsername(username);			
 			lvalues.setApikey(apikey);
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(1);
+			logger.error("Exception Message", e);
 		}
-	
 	}
-
 }
