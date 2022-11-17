@@ -1,15 +1,15 @@
 package fossid.report.excel;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Objects;
-
 import fossid.report.values.VulnerableComponents;
 import jxl.write.WritableHyperlink;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Objects;
 
 public class CreateSheet5 extends CreateSheet {
 	private final Logger logger = LogManager.getLogger(CreateSheet5.class);
@@ -20,8 +20,7 @@ public class CreateSheet5 extends CreateSheet {
 	VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 	ExcelValues excelVal = ExcelValues.getInstance();
 	WritableSheet sheet5 = excelVal.getSheet5();
-	WritableHyperlink hyperlink;
-	
+
 	public void writeSheet() throws WriteException {
 		logger.info("Creating sheet 6..");
 
@@ -45,26 +44,26 @@ public class CreateSheet5 extends CreateSheet {
 		addLabel(sheet5, 6, 1, "공격 영향도", style.sh1tableFormat2);
 		addLabel(sheet5, 7, 1, "링크", style.sh1tableFormat2);
 		
-		if(vulnerableComponent.getvulCVE().size() > 0) {
+		if(vulnerableComponent.getVulCVE().size() > 0) {
 			
 			int loop = 2, rowCount = 2;
 			WritableHyperlink link = null;
-			String componentVersion = vulnerableComponent.getvulcomponentName().get(0).toString() + vulnerableComponent.getvulcomponentVersion().get(0).toString();
+			String componentVersion = vulnerableComponent.getVulcomponentName().get(0) + vulnerableComponent.getVulComponentVersion().get(0);
 			
-			for(int i = 0; i < vulnerableComponent.getvulCVE().size(); i++) {
+			for(int i = 0; i < vulnerableComponent.getVulCVE().size(); i++) {
 				sheet5.setRowView(loop, 500);
 				
-				addLabel(sheet5, 0, loop, vulnerableComponent.getvulcomponentName().get(i).toString(), style.sh1tableFormat1);
-				addLabel(sheet5, 1, loop, vulnerableComponent.getvulcomponentVersion().get(i).toString(), style.sh1tableFormat1);
-				addLabel(sheet5, 2, loop, vulnerableComponent.getvulCVE().get(i).toString(), style.sh1tableFormat1);
-				addLabel(sheet5, 3, loop, vulnerableComponent.getvulSeverity().get(i).toString(), style.sh1tableFormat1);
-				addLabel(sheet5, 4, loop, vulnerableComponent.getvulAttackVector().get(i).toString(), style.sh1tableFormat1);
-				addLabel(sheet5, 5, loop, vulnerableComponent.getvulAttackComplexity().get(i).toString(), style.sh1tableFormat1);
-				addLabel(sheet5, 6, loop, vulnerableComponent.getvulAttackImpact().get(i).toString(), style.sh1tableFormat1);
+				addLabel(sheet5, 0, loop, vulnerableComponent.getVulcomponentName().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 1, loop, vulnerableComponent.getVulComponentVersion().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 2, loop, vulnerableComponent.getVulCVE().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 3, loop, vulnerableComponent.getVulSeverity().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 4, loop, vulnerableComponent.getVulAttackVector().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 5, loop, vulnerableComponent.getVulAttackComplexity().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 6, loop, vulnerableComponent.getVulAttackImpact().get(i), style.sh1tableFormat1);
 				addLabel(sheet5, 7, loop, "", style.sh1tableFormat1);
 				
 				try {				
-					link = new WritableHyperlink(7, loop, new URL("https://nvd.nist.gov/vuln/detail/" + vulnerableComponent.getvulCVE().get(i).toString()));
+					link = new WritableHyperlink(7, loop, new URL("https://nvd.nist.gov/vuln/detail/" + vulnerableComponent.getVulCVE().get(i)));
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}			
@@ -73,8 +72,8 @@ public class CreateSheet5 extends CreateSheet {
 			    sheet5.addHyperlink(link);		    
 				
 			   	// merge component and version cells if the component contains more than two CVEs	   
-				if(!(componentVersion.equals(vulnerableComponent.getvulcomponentName().get(i).toString() + vulnerableComponent.getvulcomponentVersion().get(i).toString()))) {
-					componentVersion = vulnerableComponent.getvulcomponentName().get(i).toString() + vulnerableComponent.getvulcomponentVersion().get(i).toString();
+				if(!(componentVersion.equals(vulnerableComponent.getVulcomponentName().get(i) + vulnerableComponent.getVulComponentVersion().get(i)))) {
+					componentVersion = vulnerableComponent.getVulcomponentName().get(i) + vulnerableComponent.getVulComponentVersion().get(i);
 					sheet5.mergeCells(0, rowCount, 0, loop);
 					sheet5.mergeCells(1, rowCount, 1, loop);
 					rowCount = loop + 1;
@@ -83,7 +82,7 @@ public class CreateSheet5 extends CreateSheet {
 			}
 			
 		   	// merge component and version cells if the component contains more than two CVEs
-			if(loop - 2 == vulnerableComponent.getvulCVE().size()) {
+			if(loop - 2 == vulnerableComponent.getVulCVE().size()) {
 				logger.debug(rowCount + " " +loop);
 				//sheet5.mergeCells(0, rowCount, 0, loop - 1);
 				//sheet5.mergeCells(1, rowCount, 1, loop - 1);			

@@ -1,20 +1,18 @@
 package fossid.report.excel;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-
+import fossid.report.values.ProjectValues;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
-import fossid.report.values.ProjectValues;
+import java.io.File;
+import java.io.IOException;
 
 public class ExcelValues {
 	private final Logger logger = LogManager.getLogger(ExcelValues.class);
@@ -42,7 +40,7 @@ public class ExcelValues {
 	public void setWB() {
 		
 		String date = new DateTime().toString(DateTimeFormat.forPattern("yyyyMMdd_HHmmss"));
-		//System.out.println("ExcelValues.java = " + date);
+		logger.debug("ExcelValues.java = " + date);
 
 		fileName = date + "_"+ pValues.getProjectName() + "_" + pValues.getVersionName() + "_Report.xls";
 

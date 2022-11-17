@@ -53,12 +53,12 @@ public class GetFolderMatrices {
 			String result = br.readLine();
 						
 			JSONParser jsonParser = new JSONParser();
-	        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());	        
+	        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result);
 	        JSONObject jsonObj2 = (JSONObject) jsonParser.parse(jsonObj1.get("data").toString());
 	        
 	        int fileTotalCount = Integer.parseInt(jsonObj2.get("total").toString());
 	        
-            idValues.setgetfileTotalCount(fileTotalCount);
+            idValues.setGetFileTotalCount(fileTotalCount);
 	        
 		} catch (Exception e) {
 			e.printStackTrace();

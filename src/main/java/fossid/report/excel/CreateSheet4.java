@@ -54,25 +54,25 @@ public class CreateSheet4 extends CreateSheet{
 		addLabel(sheet4, 6, 1, "코멘트", style.sh1tableFormat2);
 		
 		int row = 0;
-		String key = null;
-		int value = 0;
+		String key;
+		int value;
 		int loopCount = 0;
 		
-		for(int i=0; i < idValues.getfilepath().size(); i++) {
+		for(int i = 0; i < idValues.getFilepath().size(); i++) {
 			if(loopCount%200 == 0) {
 				logger.info(".");
         	}
         	loopCount++;
 			
-			if(!idValues.getcomponenetName().get(i).toString().equals(pValues.getProjectName())) {
+			if(!idValues.getComponentName().get(i).equals(pValues.getProjectName())) {
 				
 				// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
-				SetCompareLicenseAttribute.setCompareAttribute(idValues.getcomponentLicenseName().get(i));
+				SetCompareLicenseAttribute.setCompareAttribute(idValues.getComponentLicenseName().get(i));
 				
 				// value: 0 - no conflict / 1 - project license conflict / 2 - component conflict
-				projectLicenseConflict.projectLicenseConflict(idValues.getcomponentLicenseName().get(i));
+				projectLicenseConflict.projectLicenseConflict(idValues.getComponentLicenseName().get(i));
 				
-				key = idValues.getcomponentLicenseName().get(i);
+				key = idValues.getComponentLicenseName().get(i);
 				value =	bomValues.getProjectLicenseConflict().get(key);
 				if(value == 0) {
 					addLabel(sheet4, 0, 2+row, "충돌없음", style.noConflict);
@@ -80,16 +80,16 @@ public class CreateSheet4 extends CreateSheet{
 					addLabel(sheet4, 0, 2+row, "프로젝트에 선언된 라이선스와 충돌", style.projectConflict);
 				}
 				
-				if(bomValues.getComponentConflictLicense().contains(idValues.getcomponentLicenseName().get(i))) {
+				if(bomValues.getComponentConflictLicense().contains(idValues.getComponentLicenseName().get(i))) {
 					addLabel(sheet4, 0, 2+row, "다른 컴포넌트 라이선스와 충돌", style.componentConflict);
 				}
 				
-				addLabel(sheet4, 1, 2+row, idValues.getfilepath().get(i), style.sh1tableFormat5);
-				addLabel(sheet4, 2, 2+row, idValues.getcomponenetName().get(i), style.sh1tableFormat1);
-				addLabel(sheet4, 3, 2+row, idValues.getcomponentVersion().get(i), style.sh1tableFormat1);
-				addLabel(sheet4, 4, 2+row, idValues.getcomponentLicenseName().get(i), style.sh1tableFormat1);
-				addLabel(sheet4, 5, 2+row, idValues.getmatchType().get(i), style.sh1tableFormat1);
-				addLabel(sheet4, 6, 2+row, idValues.getcommnet().get(i), style.sh1tableFormat1);				
+				addLabel(sheet4, 1, 2+row, idValues.getFilepath().get(i), style.sh1tableFormat5);
+				addLabel(sheet4, 2, 2+row, idValues.getComponentName().get(i), style.sh1tableFormat1);
+				addLabel(sheet4, 3, 2+row, idValues.getComponentVersion().get(i), style.sh1tableFormat1);
+				addLabel(sheet4, 4, 2+row, idValues.getComponentLicenseName().get(i), style.sh1tableFormat1);
+				addLabel(sheet4, 5, 2+row, idValues.getMatchType().get(i), style.sh1tableFormat1);
+				addLabel(sheet4, 6, 2+row, idValues.getComment().get(i), style.sh1tableFormat1);
 				row++;
 			}	
 		}

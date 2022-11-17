@@ -107,36 +107,36 @@ public class CreateSheet0 extends CreateSheet{
 			addLabel(sheet0, 0, 9, "분석된 파일 수", style.sh0tableFormat);
 
 			sheet0.mergeCells(2, 9, 8, 9);
-			addLabel(sheet0, 2, 9, idValues.getfileTotalCount() + "개", style.sh0tableFormat);
+			addLabel(sheet0, 2, 9, idValues.getFileTotalCount() + "개", style.sh0tableFormat);
 			
 			sheet0.setRowView(10, 500);
 			sheet0.mergeCells(0, 10, 1, 10);
 			addLabel(sheet0, 0, 10, "분석된 바이트 수", style.sh0tableFormat);
 			
 			sheet0.mergeCells(2, 10, 8, 10);						
-			if(idValues.getfileTotalSize() / 1024 > 1048576) {
+			if(idValues.getFileTotalSize() / 1024 > 1048576) {
 				addLabel(sheet0, 2, 10, String.format("%1$d GiB (%2$,d MiB)", 
-						idValues.getfileTotalSize() / 1024 / 1024 / 1024, idValues.getfileTotalSize() / 1024 / 1024), style.sh0tableFormat);
-			} else if(idValues.getfileTotalSize() / 1024 < 1048576){
+						idValues.getFileTotalSize() / 1024 / 1024 / 1024, idValues.getFileTotalSize() / 1024 / 1024), style.sh0tableFormat);
+			} else if(idValues.getFileTotalSize() / 1024 < 1048576){
 				addLabel(sheet0, 2, 10, String.format("%1$d MiB (%2$,d KiB)", 
-						idValues.getfileTotalSize() / 1024 / 1024, idValues.getfileTotalSize() / 1024), style.sh0tableFormat);
+						idValues.getFileTotalSize() / 1024 / 1024, idValues.getFileTotalSize() / 1024), style.sh0tableFormat);
 			}			
 			
 			sheet0.setRowView(11, 500);
 			sheet0.mergeCells(0, 11, 1, 11);
 			addLabel(sheet0, 0, 11, "검증대상 파일 수", style.sh0tableFormat);
 			
-			int ignoredNum = idValues.getfileTotalCount() - idValues.getIgnoredCount();
+			int ignoredNum = idValues.getFileTotalCount() - idValues.getIgnoredCount();
 			sheet0.mergeCells(2, 11, 8, 11);			
-			addLabel(sheet0, 2, 11, Integer.toString(ignoredNum) + "개", style.sh0tableFormat);			
+			addLabel(sheet0, 2, 11, ignoredNum + "개", style.sh0tableFormat);
 			
 			sheet0.setRowView(12, 500);
 			sheet0.mergeCells(0, 12, 1, 12);
 			addLabel(sheet0, 0, 12, "오픈소스SW 사용 파일 수", style.sh0tableFormat);
 			
-			double percent = ((double) idValues.getpendingFileCount() / (double)ignoredNum )* 100;
+			double percent = ((double) idValues.getPendingFileCount() / (double)ignoredNum )* 100;
 			sheet0.mergeCells(2, 12, 8, 12);
-			addLabel(sheet0, 2, 12, Integer.toString(idValues.getpendingFileCount()) + "개"
+			addLabel(sheet0, 2, 12, idValues.getPendingFileCount() + "개"
 					+ " ( " + String.format("%.2f", percent) + "% )", style.sh0tableFormat);			
 			
 			sheet0.setRowView(13, 500);
@@ -144,9 +144,9 @@ public class CreateSheet0 extends CreateSheet{
 			addLabel(sheet0, 0, 13, "준법성 위반 파일 수", style.sh0tableFormat);
 			
 			//percent = ((double)idValues.getProjectConflictFileCount() / (double)idValues.getFileTotalCount() )* 100;
-			percent = ((double) idValues.getprojectConflictFileCount() / (double)ignoredNum )* 100;
+			percent = ((double) idValues.getProjectConflictFileCount() / (double)ignoredNum )* 100;
 			sheet0.mergeCells(2, 13, 8, 13);
-			addLabel(sheet0, 2, 13, Integer.toString(idValues.getprojectConflictFileCount()) + "개"
+			addLabel(sheet0, 2, 13, idValues.getProjectConflictFileCount() + "개"
 					+ " ( " + String.format("%.2f", percent) + "% )", style.sh0tableFormat);
 			
 			sheet0.setRowView(14, 500);
@@ -156,7 +156,7 @@ public class CreateSheet0 extends CreateSheet{
 			//percent = ((double)componentConflictCount / (double)idValues.getFileTotalCount() )* 100;
 			percent = ((double)componentConflictCount / (double)ignoredNum )* 100;
 			sheet0.mergeCells(2, 14, 8, 14);
-			addLabel(sheet0, 2, 14, Integer.toString(componentConflictCount) + "개"
+			addLabel(sheet0, 2, 14, componentConflictCount + "개"
 					+ " ( " + String.format("%.2f", percent) + "% )", style.sh0tableFormat);
 			
 			idValues.setAnalyzedFileCount(ignoredNum);
