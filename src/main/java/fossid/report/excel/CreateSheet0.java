@@ -176,11 +176,6 @@ public class CreateSheet0 extends CreateSheet{
 		int value;
 
 		for(int i = 0; i < bomValues.getUComponentName().size(); i++) {
-
-			if(i%5 == 0) {
-				logger.info(".");
-        	}
-
 			// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
 			SetCompareLicenseAttribute.setCompareAttribute(bomValues.getUComponentLicenseName().get(i));
 			// value: 0 - no conflict / 1 - project license conflict

@@ -13,42 +13,42 @@ public class ProjectValues implements Serializable {
 			return values;
 		}
 
-		private static String projectid;	
-		private static String projectname;
-		private static String versionid;
-		private static String versionname;
+		private static String projectId;
+		private static String projectName;
+		private static String versionId;
+		private static String versionName;
 		private static String projectLicense;	
 		
 		public String getProjectId() {
-			return projectid;
+			return projectId;
 		}
 
-		public void setProjectId(String projectid) {
-			this.projectid = projectid;
+		public void setProjectId(String projectId) {
+			ProjectValues.projectId = projectId;
 		}
 
 		public String getProjectName() {
-			return projectname;
+			return projectName;
 		}
 
-		public void setProjectName(String projectname) {
-			this.projectname = projectname;
+		public void setProjectName(String projectName) {
+			ProjectValues.projectName = projectName;
 		}
 		
 		public String getVersionId() {
-			return versionid;
+			return versionId;
 		}
 
-		public void setVersionId(String versionid) {
-			this.versionid = versionid;
+		public void setVersionId(String versionId) {
+			ProjectValues.versionId = versionId;
 		}
 
-		public void setVersionName(String versionname) {
-			this.versionname = versionname;
+		public void setVersionName(String versionName) {
+			ProjectValues.versionName = versionName;
 		}
 		
 		public String getVersionName() {
-			return versionname;
+			return versionName;
 		}
 		
 		public String getProjectLicense() {
@@ -56,7 +56,7 @@ public class ProjectValues implements Serializable {
 		}
 
 		public void setProjectLicense(String license) {
-			this.projectLicense = license;
+			projectLicense = license;
 		}
 		
 

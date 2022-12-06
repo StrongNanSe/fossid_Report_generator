@@ -1,17 +1,17 @@
 package fossid.report.getVuln;
 
+import fossid.report.values.VulnerableComponents;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import fossid.report.values.VulnerableComponents;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 public class RunCli {
-	private final Logger logger = LogManager.getLogger(RunCli.class);
+	private static final Logger logger = LogManager.getLogger(RunCli.class);
     public void runCli(String cliPath) {		
     	getProp(cliPath);		
     	cliexe();
@@ -56,11 +56,11 @@ public class RunCli {
 		String command = "";
 		String vulnResult = "";
 		
-		for(int i = 0 ; i < vulnerableComponent.getcomponentCPE().size(); i++) {
+		for(int i = 0; i < vulnerableComponent.getComponentCPE().size(); i++) {
 			if(OsValidator.isWindows()){
 				
 				try {					
-					command = fossidCli + "fossid-cli.exe --cpe " + vulnerableComponent.getcomponentCPE().get(i);					
+					command = fossidCli + "fossid-cli.exe --cpe " + vulnerableComponent.getComponentCPE().get(i);
 					shellCmd(command);
 				} catch (Exception e) {
 					logger.error("Exception Message", e);
@@ -68,19 +68,19 @@ public class RunCli {
 
 				logger.debug(cliResult);
 
-				SetVulnData.setData(cliResult, vulnerableComponent.getcomponentCPE().get(i).toString(),
-						vulnerableComponent.getcomponentName().get(i).toString(), vulnerableComponent.getcomponentVersion().get(i).toString());
+				SetVulnData.setData(cliResult, vulnerableComponent.getComponentCPE().get(i).toString(),
+						vulnerableComponent.getComponentName().get(i).toString(), vulnerableComponent.getComponentVersion().get(i).toString());
 			} else if(OsValidator.isUnix() || OsValidator.isSolaris()){
 				
 				try {					
-					command = fossidCli + "fossid-cli --cpe " + vulnerableComponent.getcomponentCPE().get(i);					
+					command = fossidCli + "fossid-cli --cpe " + vulnerableComponent.getComponentCPE().get(i);
 					shellCmd(command);
 				} catch (Exception e) {
 					logger.error("Exception Message", e);
 				}		
 				
-				SetVulnData.setData(cliResult, vulnerableComponent.getcomponentCPE().get(i).toString(),
-						vulnerableComponent.getcomponentName().get(i).toString(), vulnerableComponent.getcomponentVersion().get(i).toString());
+				SetVulnData.setData(cliResult, vulnerableComponent.getComponentCPE().get(i).toString(),
+						vulnerableComponent.getComponentName().get(i).toString(), vulnerableComponent.getComponentVersion().get(i).toString());
 			}
 		}
 	}
@@ -95,7 +95,7 @@ public class RunCli {
         
         while((result = br.readLine()) != null) {
               cliResult = result;
-              //System.out.println("cliResult = " + result);
+			  logger.debug("cliResult = " + result);
         }
 	}
 	

@@ -56,23 +56,31 @@ public class CreateSheet4 extends CreateSheet{
 		int row = 0;
 		String key;
 		int value;
-		int loopCount = 0;
-		
-		for(int i = 0; i < idValues.getFilepath().size(); i++) {
-			if(loopCount%200 == 0) {
-				logger.info(".");
-        	}
-        	loopCount++;
-			
-			if(!idValues.getComponentName().get(i).equals(pValues.getProjectName())) {
-				
-				// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
-				SetCompareLicenseAttribute.setCompareAttribute(idValues.getComponentLicenseName().get(i));
-				
-				// value: 0 - no conflict / 1 - project license conflict / 2 - component conflict
-				projectLicenseConflict.projectLicenseConflict(idValues.getComponentLicenseName().get(i));
-				
+		String projectName = pValues.getProjectName();
+
+		logger.debug("Filepath size : " + idValues.getFilepath().size());
+		logger.debug("ComponentName size : " + idValues.getComponentName().size());
+		logger.debug("ComponentVersion size : " + idValues.getComponentVersion().size());
+		logger.debug("ComponentLicenseName size : " + idValues.getComponentLicenseName().size());
+		logger.debug("MatchType size : " + idValues.getMatchType().size());
+		logger.debug("Comment size : " + idValues.getComment().size());
+		logger.debug("ProjectName : " + projectName);
+
+		for(int i = 0; i < idValues.getMatchType().size(); i++) {
+			String componentName = idValues.getComponentName().get(i);
+
+			logger.debug("count i : " + i);
+			logger.debug("ComponentName : " + componentName);
+
+			if(!componentName.equals(projectName)) {
 				key = idValues.getComponentLicenseName().get(i);
+
+				// this set affect column 0(license conflict) and 6(Patent retaliation clause)
+				SetCompareLicenseAttribute.setCompareAttribute(key);
+
+				// value: 0 - no conflict / 1 - project license conflict / 2 - component conflict
+				projectLicenseConflict.projectLicenseConflict(key);
+
 				value =	bomValues.getProjectLicenseConflict().get(key);
 				if(value == 0) {
 					addLabel(sheet4, 0, 2+row, "충돌없음", style.noConflict);
@@ -80,19 +88,20 @@ public class CreateSheet4 extends CreateSheet{
 					addLabel(sheet4, 0, 2+row, "프로젝트에 선언된 라이선스와 충돌", style.projectConflict);
 				}
 				
-				if(bomValues.getComponentConflictLicense().contains(idValues.getComponentLicenseName().get(i))) {
+				if(bomValues.getComponentConflictLicense().contains(key)) {
 					addLabel(sheet4, 0, 2+row, "다른 컴포넌트 라이선스와 충돌", style.componentConflict);
 				}
 				
 				addLabel(sheet4, 1, 2+row, idValues.getFilepath().get(i), style.sh1tableFormat5);
-				addLabel(sheet4, 2, 2+row, idValues.getComponentName().get(i), style.sh1tableFormat1);
+				addLabel(sheet4, 2, 2+row, componentName, style.sh1tableFormat1);
 				addLabel(sheet4, 3, 2+row, idValues.getComponentVersion().get(i), style.sh1tableFormat1);
-				addLabel(sheet4, 4, 2+row, idValues.getComponentLicenseName().get(i), style.sh1tableFormat1);
+				addLabel(sheet4, 4, 2+row, key, style.sh1tableFormat1);
 				addLabel(sheet4, 5, 2+row, idValues.getMatchType().get(i), style.sh1tableFormat1);
 				addLabel(sheet4, 6, 2+row, idValues.getComment().get(i), style.sh1tableFormat1);
 				row++;
 			}	
 		}
-		logger.info("");
+
+		logger.debug("row : " + row);
 	}
 }

@@ -26,10 +26,8 @@ public class PrintInfo {
 	public static void endFOSSID() {
 		CompareLicenseAttributeValues compareLicenseAttributes = CompareLicenseAttributeValues.getInstance();
 
-		logger.info("");
 		logger.info("Finish Report Generator");
 		if(compareLicenseAttributes.getOutOfLicense().size() == 1) {
-			logger.info("");
 			logger.info("The license compatibility is reviewed by \"license_Attribute.json\" file");
 			logger.info("Below license is not in the \"license_Attribute.json\" file and reviewed as \"Unspecified\" license");
 			logger.info("Please, review below license or add license attributes in the \"license_Attribute.json\" file and run exporting report again");
@@ -38,7 +36,6 @@ public class PrintInfo {
 			}
 		}
 		if(compareLicenseAttributes.getOutOfLicense().size() > 2) {
-			logger.info("");
 			logger.info("The license compatibility is reviewed by \"license_Attribute.json\" file");
 			logger.info("Below licenses are not in the \"license_Attribute.json\" file and reviewed as \"Unspecified\" license");
 			logger.info("Please, review below licenses in the report or add license attributes in the \"license_Attribute.json\" file and run exporting report again");

@@ -101,7 +101,7 @@ public class GetBillOfMaterials {
 					// get values from key
 					JSONObject tempObj = (JSONObject) jsonObj2.get(key);
 
-					//System.out.println(tempObj.toString());
+					logger.debug(tempObj.toString());
 
 					if(tempObj.get("version") == null || tempObj.get("name").toString().isEmpty()) {
 						bomValues.setUComponentName("Unspecified");
@@ -174,7 +174,7 @@ public class GetBillOfMaterials {
 				}
 			}
         	        	
-        	idValues.setpatentIssueFileCount(patentIssueFileCount);
+        	idValues.setPatentIssueFileCount(patentIssueFileCount);
 			
 		} catch (Exception e) {
 			logger.info("Exception Message", e);

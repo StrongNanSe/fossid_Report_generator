@@ -16,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class GetIdentifiedFiles {
 	private final Logger logger = LogManager.getLogger(GetIdentifiedFiles.class);
@@ -36,10 +37,6 @@ public class GetIdentifiedFiles {
 	    
 	    GetProjectLicenseConflict projectLicenseConflict = new GetProjectLicenseConflict();
 		GetMatchTypes matchType = new GetMatchTypes();
-	    
-	    String matchTypeValue = "";
-    	String matchTypeKey = "";
-    	String tempValue = "";
 				
 		// create json to call FOSSID project/list_projects api 		
 		JSONObject dataObject = new JSONObject();
@@ -67,19 +64,19 @@ public class GetIdentifiedFiles {
 			if (httpClientResponse.getStatusLine().getStatusCode() != 200) {
 				throw new Exception("Failed : HTTP Error code : " + httpClientResponse.getStatusLine().getStatusCode());
 			}
-								
-			
+
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
-			String result = br.readLine();		
-					
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
+			JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObj1 = (JSONObject) jsonParser.parse(br.readLine());
             JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
             Iterator iter = jsonObj2.keySet().iterator();
-                        
+
+			String project_Name = String.valueOf(pValues.getProjectName());
+
             int identifiedFileCount = 0;
-            
+            int projectFileCount = 0;
+
             // this value is to count number of files belong to a component
             int bomFileCount = 0;
             
@@ -91,10 +88,8 @@ public class GetIdentifiedFiles {
             
             // to count patentIssueFile
             int patentIssueFileCount = 0;
-            
+
             // to change license name of 'Not Applicable'
-            String licenseName = "";                        
-            
             int loopCount = 0;
 			logger.info("In progress..");
 
@@ -102,73 +97,83 @@ public class GetIdentifiedFiles {
             while(iter.hasNext()) {
 
             	if(loopCount%100 == 0) {
-					logger.info(loopCount + "/"+ idValues.getfileTotalCount());
+					logger.info(loopCount + "/"+ idValues.getFileTotalCount());
             	}
             	
             	loopCount++;
             	
             	// set key value to key
             	String key = (String) iter.next();
+
+				logger.debug("key : " + key);
+
             	// get values from key
-            	JSONObject tempObj = (JSONObject) jsonObj2.get(key);            	       	
-            	
-            	matchTypeValue = matchType.getMatchType(tempObj.get( "file_path").toString());
+            	JSONObject tempObj = (JSONObject) jsonObj2.get(key);
+
+				logger.debug("tempObj-" + loopCount + " : " + tempObj);
+
+				String matchTypeValue;
+				String matchTypeKey;
+				String tempValue;
+
+				String file_Path = String.valueOf(tempObj.get("file_path"));
+				String file_Size = String.valueOf(tempObj.get("file_size"));
+				String component_Name = String.valueOf(tempObj.get("component_name"));
+				String component_Version = String.valueOf(tempObj.get("component_version"));
+				String component_License_Name = String.valueOf(tempObj.get("component_license_name"));
+				String comment = String.valueOf(tempObj.get("comment"));
+				String component_Cpe = String.valueOf(tempObj.get("component_cpe"));
+
+				String licenseValue;
+
+				logger.debug("file_Path : " + file_Path);
+
+            	matchTypeValue = matchType.getMatchType(file_Path);
+
+				logger.debug("matchTypeValue : " + matchTypeValue);
             	
             	// to avoid duplicate of file_path because multiple file_license can be founded in a file
-            	if(!(idValues.getfilepath().contains(tempObj.get("file_path"))) || matchTypeValue.equals("Partial")) {
-            		
-            		//set values if component_name is exist
-            		if(tempObj.get("component_name") != null) {
-                		//set file_path
-                    	if(tempObj.get("file_path") == null) {
-                    		idValues.setfilepath("");
-                    	} else {
-                    		idValues.setfilepath(tempObj.get("file_path").toString());            		
-                    	}  
-                    	
-                    	
-                    	//set file_size
-                    	if(tempObj.get("file_size") == null) {
-                    		idValues.setfileTotalSize(0);
-                    	} else {
-                    		// from 21.2.3
-                    		//String st = Long.toString((long) tempObj.get("file_size"));
-                    		//int temp = Integer.parseInt(st);
-                    		
-                    		// by 21.2.3 
-                    		int temp = Integer.parseInt(tempObj.get("file_size").toString());     
-                    		
-                    		idValues.setfileTotalSize(temp);           		
-                    	}  
-                    	
-                    	//set component_name
-                    	if(tempObj.get("component_name") == null) {
-                    		idValues.setcomponenetName("Unspecified");
-                    		matchTypeKey = "Unspecified";
-                    	} else {
-                    		idValues.setcomponenetName(tempObj.get("component_name").toString());
-                    		matchTypeKey = tempObj.get("component_name").toString();
-                    	}
+            	if(!(idValues.getFilepath().contains(file_Path)) || matchTypeValue.equals("Partial")) {
+					//set file_path
+					if(file_Path.equals("null")) {
+						idValues.setFilepath("");
+					} else {
+						idValues.setFilepath(file_Path);
+					}
+
+					//set file_size
+					if(Objects.equals(file_Size, "null")) {
+						idValues.setFileTotalSize(0);
+					} else {
+						// from 21.2.3
+						//String st = Long.toString((long) tempObj.get("file_size"));
+						//int temp = Integer.parseInt(st);
+
+						// by 21.2.3
+						idValues.setFileTotalSize(Integer.parseInt(file_Size));
+					}
+
+					// set match_types for individual files
+					idValues.setMatchType(matchTypeValue);
+
+					if(!Objects.equals(component_Name, "null")) {
+						idValues.setComponentName(component_Name);
+						matchTypeKey = component_Name;
                     	
                     	//set component_version
-                    	if(tempObj.get("component_version") == null) {
-                    		idValues.setcomponentVersion("Unspecified");
+                    	if(Objects.equals(component_Version, "null")) {
+                    		idValues.setComponentVersion("Unspecified");
                     		matchTypeKey = matchTypeKey + "Unspecified";
                     	} else {
-                    		idValues.setcomponentVersion(tempObj.get("component_version").toString());         
-                    		matchTypeKey = matchTypeKey + tempObj.get("component_version").toString();
+                    		idValues.setComponentVersion(component_Version);
+                    		matchTypeKey = matchTypeKey + component_Version;
                     	}
-                    	
-                    	
-                    	// set match_types for individual files
-                    	//matchTypeValue = matchType.getmatchtype(tempObj.get("file_path").toString());
-                    	idValues.setmatchType(matchTypeValue);
                     	
                     	// set Match Types for each component
                     	tempValue = matchTypeValue;
                     	
-                    	if(idValues.getmatchTypeHashmap().get(matchTypeKey) != null){
-                    		tempValue = idValues.getmatchTypeHashmap().get(matchTypeKey);
+                    	if(idValues.getMatchTypeHashmap().get(matchTypeKey) != null){
+                    		tempValue = idValues.getMatchTypeHashmap().get(matchTypeKey);
                     	}
                     	
                     	if(!(matchTypeValue.equals(tempValue))) {                    	
@@ -176,57 +181,44 @@ public class GetIdentifiedFiles {
                     	}
                     	
                     	if(matchTypeValue.equals("Partial, Full") || matchTypeValue.equals("Full, Partial")) {
-                    		idValues.getmatchTypeHashmap().put(matchTypeKey, matchTypeValue);
+                    		idValues.getMatchTypeHashmap().put(matchTypeKey, matchTypeValue);
                     	}
                     	
-                    	if(!(idValues.getmatchTypeHashmap().containsKey(matchTypeKey))) {
-                    		idValues.getmatchTypeHashmap().put(matchTypeKey, matchTypeValue);
+                    	if(!(idValues.getMatchTypeHashmap().containsKey(matchTypeKey))) {
+                    		idValues.getMatchTypeHashmap().put(matchTypeKey, matchTypeValue);
                     	}
-                    	
-                    	
+
                     	// To set project license conflict and patent issue file count
-                    	if(tempObj.get("component_license_name") == null) {
-                    		idValues.setcomponentVersion("Unspecified");
-                    	} else if(tempObj.get("component_license_name") != null) {                   		
+                    	if(Objects.equals(component_License_Name, "null")) {
+							licenseValue = "Unspecified";
+							idValues.setComponentVersion(licenseValue);
+                    	} else {
                     		String cKey = null;
-                    		int value = 0;      
-                    		// set license name as 'Unspecified' if Not Applicable
-                    		licenseName = tempObj.get("component_license_name").toString();
-                    		if(licenseName.equals("Not Applicable")) {
-                    			licenseName = "Unspecified";
-                    		}
+                    		int value = 0;
                     		
                    			// this set affect column 0(license conflict) and 6(Patent retaliation clause) 
-                   			SetCompareLicenseAttribute.setCompareAttribute(licenseName);
+                   			SetCompareLicenseAttribute.setCompareAttribute(component_License_Name);
                    			// value: 0 - no conflict / 1 - project license conflict
-                   			projectLicenseConflict.projectLicenseConflict(licenseName);
-                   			cKey = licenseName;
+                   			projectLicenseConflict.projectLicenseConflict(component_License_Name);
+                   			cKey = component_License_Name;
                    			value =	bomValues.getProjectLicenseConflict().get(cKey);
                    			if (value == 1) {
                    				projectConflictFileCount++;
-                   			}		
-                    	}                		
-                    	
-                    	//set component_license_name
-                    	if(tempObj.get("component_license_name") == null) {
-                    		idValues.setcomponentLicenseName("Unspecified");
-                    	} else {
-                    		licenseName = tempObj.get("component_license_name").toString();
-                    		if(licenseName.equals("Not Applicable")) {
-                    			licenseName = "Unspecified";
-                    		}
-                    		idValues.setcomponentLicenseName(licenseName);            		
+                   			}
+
+							licenseValue = component_License_Name;
+							idValues.setComponentLicenseName(licenseValue);
                     	}
                     	
                     	// set comment
-                    	if(tempObj.get("comment") == null) {
-                    		idValues.setcommnet("");
+                    	if(Objects.equals(comment, "null")) {
+                    		idValues.setComment("");
                     	} else {
-                    		idValues.setcommnet(tempObj.get("comment").toString());            		
-                    	} 
-                    	
+                    		idValues.setComment(comment);
+                    	}
+
                     	// set value for a component
-                    	String componentValue = tempObj.get("component_name").toString()+tempObj.get("component_version").toString();                    	
+                    	String componentValue = component_Name + component_Version;
                     	                    	
                     	// get a component value
                     	bomFileCount = bomValues.getUComponentFileCount().get(componentValue);
@@ -234,14 +226,7 @@ public class GetIdentifiedFiles {
                     	bomFileCount++;
                     	// then put value in the component
                     	bomValues.setUComponentFileCount(componentValue, bomFileCount);
-                    	
-                    	// set value for a license
-                    	String licenseValue = null;
-                    	if(tempObj.get("component_license_name") == null) {
-                    		licenseValue = "Unspecified";
-                    	} else {
-                    		licenseValue = licenseName;          		
-                    	}
+
                     	// get a component value
                     	licenseFileCount = bomValues.getULicenseFileCount().get(licenseValue);
                     	// plus value
@@ -250,73 +235,52 @@ public class GetIdentifiedFiles {
                     	bomValues.setULicenseFileCount(licenseValue, licenseFileCount);
                     	
                     	//set vulnerable components
-                    	if(!(tempObj.get("component_cpe") == null || tempObj.get("component_cpe").equals(""))) {
-							if(!vulnerableComponent.getcpeHashmap().containsKey(componentValue)) {
-								vulnerableComponent.setcomponentName(tempObj.get("component_name").toString());
-								vulnerableComponent.setcomponentVersion(tempObj.get("component_version").toString());
-								vulnerableComponent.setcomponentCPE(tempObj.get("component_cpe").toString());
+                    	if(!(Objects.equals(component_Cpe, "null") || Objects.equals(component_Cpe, ""))) {
+							if(!vulnerableComponent.getCpeHashmap().containsKey(componentValue)) {
+								vulnerableComponent.setComponentName(component_Name);
+								vulnerableComponent.setComponentVersion(component_Version);
+								vulnerableComponent.setComponentCPE(component_Cpe);
 							}
-							vulnerableComponent.setcpeHashmap(componentValue, tempObj.get("component_cpe").toString());
+							vulnerableComponent.setCpeHashmap(componentValue, component_Cpe);
                     	}
                     
-                    identifiedFileCount++;                    
-                    
+                    	identifiedFileCount++;
+
+						logger.debug("identifiedFileCount : " + identifiedFileCount + " / " + component_Name);
                     //set values if component_name is not exist
                 	} else {
-                		//set file_path
-                    	if(tempObj.get("file_path") == null) {
-                    		idValues.setfilepath("");
-                    	} else {
-                    		idValues.setfilepath(tempObj.get("file_path").toString());            		
-                    	}          
-                    	
-                    	idValues.setmatchType(matchType.getMatchType(tempObj.get("file_path").toString()));
-                    	
-                    	//set file_size
-                    	if(tempObj.get("file_size") == null) {
-                    		idValues.setfileTotalSize(0);
-                    	} else {
-                    		// from 21.2.3
-                    		//String st = Long.toString((long) tempObj.get("file_size"));
-                    		//int temp = Integer.parseInt(st);
-                    		
-                    		// by 21.2.3  
-                    		//long temp = Integer.parseInt(tempObj.get("file_size").toString());
-                    		long temp = Long.parseLong(tempObj.get("file_size").toString());
-                    	
-                    		idValues.setfileTotalSize(temp);
-                    	} 
-                		
                     	//set Project Name for original files (not identified)
-                   		idValues.setcomponenetName(pValues.getProjectName());
+                   		idValues.setComponentName(project_Name);
                     	
                     	//set Project Version for original files (not identified)
-                   		idValues.setcomponentVersion("Unspecified");            		
+                   		idValues.setComponentVersion("Unspecified");
                    		
                         //set Project License for original files (not identified)
-                    	idValues.setcomponentLicenseName(pValues.getProjectLicense());
-                   		
-                   	    //set comment
-                    	if(tempObj.get("comment") == null) {
-                    		idValues.setcommnet("");
-                    	} else {
-                    		idValues.setcommnet(tempObj.get("comment").toString());            		
-                    	}
-                    	
-                	}       		
-            	} 
-            }                        
+                    	idValues.setComponentLicenseName(pValues.getProjectLicense());
 
-			logger.info("");
-			logger.info("");
+						projectFileCount++;
+
+						logger.debug("projectFileCount : " + projectFileCount + " / " + component_Name);
+                	}
+
+					// set comment
+					if(Objects.equals(comment, "null")) {
+						idValues.setComment("");
+					} else {
+						idValues.setComment(comment);
+					}
+            	} 
+            }
+
+			logger.debug("MatchType Size : " + idValues.getMatchType().size());
+			logger.debug("File Path detail : " + idValues.getFilepath().size() + " : " + idValues.getFilepath());
 
             idValues.setIdentifiedFileCount(identifiedFileCount);
-            idValues.setprojectConflictFileCount(projectConflictFileCount);
-            idValues.setpendingFileCount(identifiedFileCount);
+            idValues.setProjectConflictFileCount(projectConflictFileCount);
+            idValues.setPendingFileCount(identifiedFileCount);
                    
 		} catch (Exception e) {
 			logger.error("Exception Message", e);
-			System.exit(1);
 		}
 	}
 	

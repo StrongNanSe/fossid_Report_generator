@@ -31,88 +31,88 @@ public class VulnerableComponents implements Serializable {
 	
 	private Map<String, String> cpeHashmap = new HashMap<>();
 	
-	public ArrayList<String> getcomponentName() {
+	public ArrayList<String> getComponentName() {
 		return componentName;
 	}
-	public void setcomponentName(String componentName) {
-		this.componentName.add(componentName);
+	public void setComponentName(String componentName) {
+		VulnerableComponents.componentName.add(componentName);
 	}
 	
-	public ArrayList<String> getcomponentVersion() {
+	public ArrayList<String> getComponentVersion() {
 		return componentVersion;
 	}
-	public void setcomponentVersion(String componentVersion) {
-		this.componentVersion.add(componentVersion);
+	public void setComponentVersion(String componentVersion) {
+		VulnerableComponents.componentVersion.add(componentVersion);
 	}
 	
-	public ArrayList<String> getcomponentCPE() {
+	public ArrayList<String> getComponentCPE() {
 		return componentCPE;
 	}
-	public void setcomponentCPE(String componentCPE) {
-		this.componentCPE.add(componentCPE);
+	public void setComponentCPE(String componentCPE) {
+		VulnerableComponents.componentCPE.add(componentCPE);
 	}
 	
-	public Map<String, String> getcpeHashmap() {
+	public Map<String, String> getCpeHashmap() {
 		return cpeHashmap;
 	}
-	public void setcpeHashmap(String key, String value) {
+	public void setCpeHashmap(String key, String value) {
 		this.cpeHashmap.put(key, value);
 	}
 	
-	public ArrayList<String> getvulcomponentName() {
+	public ArrayList<String> getVulcomponentName() {
 		return vulcomponentName;
 	}
-	public void setvulcomponentName(String vulcomponentName) {
-		this.vulcomponentName.add(vulcomponentName);
+	public void setVulComponentName(String vulComponentName) {
+		vulcomponentName.add(vulComponentName);
 	}
 	
-	public ArrayList<String> getvulcomponentVersion() {
+	public ArrayList<String> getVulComponentVersion() {
 		return vulcomponentVersion;
 	}	
-	public void setvulcomponentVersion(String vulcomponentVersion) {
-		this.vulcomponentVersion.add(vulcomponentVersion);
+	public void setVulComponentVersion(String vulComponentVersion) {
+		vulcomponentVersion.add(vulComponentVersion);
 	}
 	
-	public ArrayList<String> getvulCVE() {
+	public ArrayList<String> getVulCVE() {
 		return vulCVE;
 	}
-	public void setvulCVE(String vulCVE) {
-		this.vulCVE.add(vulCVE);
+	public void setVulCVE(String vulCVE) {
+		VulnerableComponents.vulCVE.add(vulCVE);
 	}
 	
-	public ArrayList<String> getvulCVSS() {
+	public ArrayList<String> getVulCVSS() {
 		return vulCVSS;
 	}
-	public void setvulCVSS(String vulCVSS) {
-		this.vulCVSS.add(vulCVSS);
+	public void setVulCVSS(String vulCVSS) {
+		VulnerableComponents.vulCVSS.add(vulCVSS);
 	}
 	
-	public ArrayList<String> getvulSeverity() {
+	public ArrayList<String> getVulSeverity() {
 		return vulSeverity;
 	}
-	public void setvulSeverity(String vulSeverity) {
-		this.vulSeverity.add(vulSeverity);
+	public void setVulSeverity(String vulSeverity) {
+		VulnerableComponents.vulSeverity.add(vulSeverity);
 	}
 	
-	public ArrayList<String> getvulAttackVector() {
+	public ArrayList<String> getVulAttackVector() {
 		return vulAttackVector;
 	}
-	public void setvulAttackVector(String vulAttackVector) {
-		this.vulAttackVector.add(vulAttackVector);
+	public void setVulAttackVector(String vulAttackVector) {
+		VulnerableComponents.vulAttackVector.add(vulAttackVector);
 	}
 	
-	public ArrayList<String> getvulAttackComplexity() {
+	public ArrayList<String> getVulAttackComplexity() {
 		return vulAttackComplexity;
 	}
-	public void setvulAttackComplexity(String vulAttackComplexity) {
-		this.vulAttackComplexity.add(vulAttackComplexity);
+	public void setVulAttackComplexity(String vulAttackComplexity) {
+		VulnerableComponents.vulAttackComplexity.add(vulAttackComplexity);
 	}
 	
-	public ArrayList<String> getvulAttackImpact() {
+	public ArrayList<String> getVulAttackImpact() {
 		return vulAttackImpact;
 	}
-	public void setvulAttackImpact(String vulAttackImpact) {
-		this.vulAttackImpact.add(vulAttackImpact);
+	public void setVulAttackImpact(String vulAttackImpact) {
+		VulnerableComponents.vulAttackImpact.add(vulAttackImpact);
 	}
 	
 }

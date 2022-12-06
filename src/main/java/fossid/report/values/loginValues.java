@@ -13,25 +13,25 @@ public class LoginValues implements Serializable {
 		return values;
 	}
 
-	private String serveruri;
-	private static String serverApiuri;
+	private String serverUri;
+	private static String serverApiUri;
 	private static String username;
 	private static String apikey;	
 	
 	public String getServerUri() {
-		return serveruri;
+		return serverUri;
 	}
 
-	public void setServerUri(String serveruri) {
-		this.serveruri = serveruri;
+	public void setServerUri(String serverUri) {
+		this.serverUri = serverUri;
 	}
 
 	public String getServerApiUri() {
-		return serverApiuri;
+		return serverApiUri;
 	}
 
-	public void setServerApiUri(String serverApiuri) {
-		this.serverApiuri = serverApiuri;
+	public void setServerApiUri(String serverApiUri) {
+		LoginValues.serverApiUri = serverApiUri;
 	}
 
 	public String getUsername() {
@@ -39,7 +39,7 @@ public class LoginValues implements Serializable {
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		LoginValues.username = username;
 	}
 
 	public String getApikey() {
@@ -47,7 +47,7 @@ public class LoginValues implements Serializable {
 	}
 
 	public void setApikey(String apikey) {
-		this.apikey = apikey;
+		LoginValues.apikey = apikey;
 	}
 	
 }

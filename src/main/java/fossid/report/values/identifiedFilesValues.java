@@ -44,7 +44,7 @@ public class IdentifiedFilesValues implements Serializable {
 	private ArrayList<String> matchType = new ArrayList<String>();
 	private Map<String, String> matchTypeHashmap = new HashMap<>();
 
-	public int getAnalzyedFileCount() {
+	public int getAnalyzedFileCount() {
 		return analyzedFileCount;
 	}
 	public void setAnalyzedFileCount(int analyzedFileCount) {
@@ -58,38 +58,38 @@ public class IdentifiedFilesValues implements Serializable {
 		this.ignoredFileCount = ignoredFileCount;
 	}
 	
-	public int getpendingFileCount() {
+	public int getPendingFileCount() {
 		return pendingFileCount;
 	}
-	public void setpendingFileCount(int pendingFileCount) {
+	public void setPendingFileCount(int pendingFileCount) {
 		this.pendingFileCount = pendingFileCount;
 	}
 	
-	public int getpatentIssueFileCount() {
+	public int getPatentIssueFileCount() {
 		return patentIssueFileCount;
 	}
-	public void setpatentIssueFileCount(int patentIssueFileCount) {
+	public void setPatentIssueFileCount(int patentIssueFileCount) {
 		this.patentIssueFileCount = patentIssueFileCount;
 	}
 	
-	public int getprojectConflictFileCount() {
+	public int getProjectConflictFileCount() {
 		return projectConflictFileCount;
 	}
-	public void setprojectConflictFileCount(int projectConflictFileCount) {
+	public void setProjectConflictFileCount(int projectConflictFileCount) {
 		this.projectConflictFileCount = projectConflictFileCount;
 	}
 	
-	public int getfileTotalCount() {
+	public int getFileTotalCount() {
 		return fileTotalCount;
 	}
-	public void setgetfileTotalCount(int fileTotalCount) {
+	public void setGetFileTotalCount(int fileTotalCount) {
 		this.fileTotalCount = fileTotalCount;
 	}
 	
-	public long getfileTotalSize() {
+	public long getFileTotalSize() {
 		return fileTotalSize;
 	}
-	public void setfileTotalSize(long filesize) {
+	public void setFileTotalSize(long filesize) {
 		this.fileTotalSize = fileTotalSize + filesize;
 	}
 	
@@ -100,102 +100,102 @@ public class IdentifiedFilesValues implements Serializable {
 		this.identifiedFileCount = identifiedFileCount + count;
 	}
 	
-	public ArrayList<String> getfilepath() {
+	public ArrayList<String> getFilepath() {
 		return filepath;
 	}
-	public void setfilepath(String filepath) {
+	public void setFilepath(String filepath) {
 		this.filepath.add(filepath);
 	}
 	
-	public ArrayList<String> getidentificationCopyright() {
+	public ArrayList<String> getIdentificationCopyright() {
 		return identificationCopyright;
 	}
-	public void setidentificationCopyright(String identificationCopyright) {
+	public void setIdentificationCopyright(String identificationCopyright) {
 		this.identificationCopyright.add(identificationCopyright);
 	}
 	
-	public ArrayList<String> getcomponenetName() {
+	public ArrayList<String> getComponentName() {
 		return componenetName;
 	}
-	public void setcomponenetName(String componenetName) {
-		this.componenetName.add(componenetName);
+	public void setComponentName(String componentName) {
+		this.componenetName.add(componentName);
 	}
 
-	public ArrayList<String> getcomponentVersion() {
+	public ArrayList<String> getComponentVersion() {
 		return componentVersion;
 	}
-	public void setcomponentVersion(String componentVersion) {
+	public void setComponentVersion(String componentVersion) {
 		this.componentVersion.add(componentVersion);
 	}
 	
-	public ArrayList<String> getcomponentCopyright() {
+	public ArrayList<String> getComponentCopyright() {
 		return componentCopyright;
 	}
-	public void setcomponentCopyright(String componentCopyright) {
+	public void setComponentCopyright(String componentCopyright) {
 		this.componentCopyright.add(componentCopyright);
 	}
 	
-	public ArrayList<String> getcomponentCPE() {
+	public ArrayList<String> getComponentCPE() {
 		return componentCPE;
 	}
-	public void setcomponentCPE(String componentCPE) {
+	public void setComponentCPE(String componentCPE) {
 		this.componentCPE.add(componentCPE);
 	}
 	
-	public ArrayList<String> getcomponentLicenseName() {
+	public ArrayList<String> getComponentLicenseName() {
 		return componentLicenseName;
 	}
-	public void setcomponentLicenseName(String componentLicenseName) {
+	public void setComponentLicenseName(String componentLicenseName) {
 		this.componentLicenseName.add(componentLicenseName);
 	}
 	
-	public ArrayList<String> getcomponentCopyleft() {
+	public ArrayList<String> getComponentCopyleft() {
 		return componentCopyleft;
 	}
-	public void setcomponentCopyleft(String componentCopyleft) {
+	public void setComponentCopyleft(String componentCopyleft) {
 		this.componentCopyleft.add(componentCopyleft);
 	}
 	
-	public ArrayList<String> getfileLicenseName() {
+	public ArrayList<String> getFileLicenseName() {
 		return fileLicenseName;
 	}
-	public void setfileLicenseName(String fileLicenseName) {
+	public void setFileLicenseName(String fileLicenseName) {
 		this.fileLicenseName.add(fileLicenseName);
 	}
 	
-	public ArrayList<String> getfileLicenseMatchType() {
+	public ArrayList<String> getFileLicenseMatchType() {
 		return fileLicenseMatchType;
 	}
-	public void setfileLicenseMatchType(String fileLicenseMatchType) {
+	public void setFileLicenseMatchType(String fileLicenseMatchType) {
 		this.fileLicenseMatchType.add(fileLicenseMatchType);
 	}
 	
 	
-	public ArrayList<String> getfileLicenseCopyleft() {
+	public ArrayList<String> getFileLicenseCopyleft() {
 		return fileLicenseCopyleft;
 	}
-	public void setfileLicenseCopyleft(String fileLicenseCopyleft) {
+	public void setFileLicenseCopyleft(String fileLicenseCopyleft) {
 		this.fileLicenseCopyleft.add(fileLicenseCopyleft);
 	}	
 	
-	public ArrayList<String> getcommnet() {
+	public ArrayList<String> getComment() {
 		return comment;
 	}
-	public void setcommnet(String comment) {
+	public void setComment(String comment) {
 		this.comment.add(comment);
 	}
 	
-	public ArrayList<String> getmatchType() {
+	public ArrayList<String> getMatchType() {
 		return matchType;
 	}
-	public void setmatchType(String matchType) {
+	public void setMatchType(String matchType) {
 		this.matchType.add(matchType);
 	}
 	
-	public Map<String, String> getmatchTypeHashmap() {
+	public Map<String, String> getMatchTypeHashmap() {
 		return matchTypeHashmap;
 	}
-	public void setmatchTypeHashmap(String key, String value) {
+	public void setMatchTypeHashmap(String key, String value) {
 		this.matchTypeHashmap.put(key, value);
 	}
 }

@@ -22,6 +22,8 @@ public class GetMatchTypes {
 	private final Logger logger = LogManager.getLogger(GetMatchTypes.class);
 
 	public String getMatchType(String filePath) {
+		logger.debug("filePath : " + filePath);
+
 		LoginValues lValues = LoginValues.getInstance();
 		ProjectValues pValues = ProjectValues.getInstance();
 		
@@ -62,10 +64,12 @@ public class GetMatchTypes {
 			String result = br.readLine();
 					
 			JSONParser jsonParser = new JSONParser();
-	        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
+	        JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result);
 	        char tmp1 = jsonObj1.get("data").toString().charAt(0);
 	        String tmp2 = String.valueOf(tmp1);
-	        
+
+			logger.debug("tmp2 : " + tmp2);
+
 	        if(tmp2.equals("[")) {
 	        	JSONArray jsonObj2 = (JSONArray) jsonObj1.get("data");
 	        	// loop all matches in case of match_type is 'intake'
@@ -79,12 +83,21 @@ public class GetMatchTypes {
 						break;
 					}
 				}
+
+				logger.debug("getMatchType : true 1");
 	        } else {
 	        	JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
 				// loop all matches in case of match_type is 'intake'
+
+				logger.debug("jsonObj2 : " + jsonObj2);
+
 				for (Object o : jsonObj2.keySet()) {
 					String key = (String) o;
 					JSONObject jsonObj3 = (JSONObject) jsonObj2.get(key);
+
+					logger.debug("jsonObj3 : " + jsonObj3);
+					logger.debug("match_type : " + jsonObj3.get("match_type"));
+
 					if (jsonObj3.get("match_type").equals("full")) {
 						matchType = "Full";
 						break;
@@ -93,6 +106,8 @@ public class GetMatchTypes {
 						break;
 					}
 				}
+
+				logger.debug("getMatchType : false 2");
 	        }
 		} catch (Exception e) {
 			logger.error("Exception Message", e);
@@ -105,6 +120,9 @@ public class GetMatchTypes {
 				logger.error("Exception Message", e);
 			}
 		}
+
+		logger.debug("matchType : " + matchType);
+
 		return matchType;		
 	}
 }

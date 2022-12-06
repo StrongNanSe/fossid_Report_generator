@@ -17,17 +17,17 @@ public class ProjectLicenseConflictAttributeValues implements Serializable {
 	private ArrayList<String> prlicenseName = new ArrayList<String>();
 	private ArrayList<String> prconflictReason = new ArrayList<String>();
 	
-	public ArrayList<String> getprLicenseConflictName() {
+	public ArrayList<String> getPrLicenseConflictName() {
 		return prlicenseName;
 	}
-	public void setprLicenseConflictName(String licenseName) {
+	public void setPrLicenseConflictName(String licenseName) {
 		this.prlicenseName.add(licenseName);
 	}
 	
-	public ArrayList<String> getprLicenseConflictReason() {
+	public ArrayList<String> getPrLicenseConflictReason() {
 		return prconflictReason;
 	}
-	public void setprLicenseConflictReason(String conflictReason) {
+	public void setPrLicenseConflictReason(String conflictReason) {
 		this.prconflictReason.add(conflictReason);
 	}	
 
