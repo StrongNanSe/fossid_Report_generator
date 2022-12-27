@@ -48,12 +48,12 @@ public class CreateSheet5 extends CreateSheet {
 			
 			int loop = 2, rowCount = 2;
 			WritableHyperlink link = null;
-			String componentVersion = vulnerableComponent.getVulcomponentName().get(0) + vulnerableComponent.getVulComponentVersion().get(0);
+			String componentVersion = vulnerableComponent.getVulComponentName().get(0) + vulnerableComponent.getVulComponentVersion().get(0);
 			
 			for(int i = 0; i < vulnerableComponent.getVulCVE().size(); i++) {
 				sheet5.setRowView(loop, 500);
 				
-				addLabel(sheet5, 0, loop, vulnerableComponent.getVulcomponentName().get(i), style.sh1tableFormat1);
+				addLabel(sheet5, 0, loop, vulnerableComponent.getVulComponentName().get(i), style.sh1tableFormat1);
 				addLabel(sheet5, 1, loop, vulnerableComponent.getVulComponentVersion().get(i), style.sh1tableFormat1);
 				addLabel(sheet5, 2, loop, vulnerableComponent.getVulCVE().get(i), style.sh1tableFormat1);
 				addLabel(sheet5, 3, loop, vulnerableComponent.getVulSeverity().get(i), style.sh1tableFormat1);
@@ -72,8 +72,8 @@ public class CreateSheet5 extends CreateSheet {
 			    sheet5.addHyperlink(link);		    
 				
 			   	// merge component and version cells if the component contains more than two CVEs	   
-				if(!(componentVersion.equals(vulnerableComponent.getVulcomponentName().get(i) + vulnerableComponent.getVulComponentVersion().get(i)))) {
-					componentVersion = vulnerableComponent.getVulcomponentName().get(i) + vulnerableComponent.getVulComponentVersion().get(i);
+				if(!(componentVersion.equals(vulnerableComponent.getVulComponentName().get(i) + vulnerableComponent.getVulComponentVersion().get(i)))) {
+					componentVersion = vulnerableComponent.getVulComponentName().get(i) + vulnerableComponent.getVulComponentVersion().get(i);
 					sheet5.mergeCells(0, rowCount, 0, loop);
 					sheet5.mergeCells(1, rowCount, 1, loop);
 					rowCount = loop + 1;

@@ -16,20 +16,20 @@ public class VulnerableComponents implements Serializable {
 		return values;
 	}
 
-	private static ArrayList<String> componentName = new ArrayList<String>();	
-	private static ArrayList<String> componentVersion = new ArrayList<String>();
-	private static ArrayList<String> componentCPE = new ArrayList<String>();
+	private static final ArrayList<String> componentName = new ArrayList<String>();
+	private static final ArrayList<String> componentVersion = new ArrayList<String>();
+	private static final ArrayList<String> componentCPE = new ArrayList<String>();
 	
-	private static ArrayList<String> vulcomponentName = new ArrayList<String>();
-	private static ArrayList<String> vulcomponentVersion = new ArrayList<String>();
-	private static ArrayList<String> vulCVE = new ArrayList<String>();
-	private static ArrayList<String> vulCVSS = new ArrayList<String>();
-	private static ArrayList<String> vulSeverity = new ArrayList<String>();
-	private static ArrayList<String> vulAttackVector = new ArrayList<String>();
-	private static ArrayList<String> vulAttackComplexity = new ArrayList<String>();
-	private static ArrayList<String> vulAttackImpact = new ArrayList<String>();
+	private static final ArrayList<String> vulComponentName = new ArrayList<String>();
+	private static final ArrayList<String> vulComponentVersion = new ArrayList<String>();
+	private static final ArrayList<String> vulCVE = new ArrayList<String>();
+	private static final ArrayList<String> vulCVSS = new ArrayList<String>();
+	private static final ArrayList<String> vulSeverity = new ArrayList<String>();
+	private static final ArrayList<String> vulAttackVector = new ArrayList<String>();
+	private static final ArrayList<String> vulAttackComplexity = new ArrayList<String>();
+	private static final ArrayList<String> vulAttackImpact = new ArrayList<String>();
 	
-	private Map<String, String> cpeHashmap = new HashMap<>();
+	private final Map<String, String> cpeHashmap = new HashMap<>();
 	
 	public ArrayList<String> getComponentName() {
 		return componentName;
@@ -59,18 +59,18 @@ public class VulnerableComponents implements Serializable {
 		this.cpeHashmap.put(key, value);
 	}
 	
-	public ArrayList<String> getVulcomponentName() {
-		return vulcomponentName;
+	public ArrayList<String> getVulComponentName() {
+		return vulComponentName;
 	}
 	public void setVulComponentName(String vulComponentName) {
-		vulcomponentName.add(vulComponentName);
+		VulnerableComponents.vulComponentName.add(vulComponentName);
 	}
 	
 	public ArrayList<String> getVulComponentVersion() {
-		return vulcomponentVersion;
+		return vulComponentVersion;
 	}	
 	public void setVulComponentVersion(String vulComponentVersion) {
-		vulcomponentVersion.add(vulComponentVersion);
+		VulnerableComponents.vulComponentVersion.add(vulComponentVersion);
 	}
 	
 	public ArrayList<String> getVulCVE() {

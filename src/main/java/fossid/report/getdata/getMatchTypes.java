@@ -22,8 +22,6 @@ public class GetMatchTypes {
 	private final Logger logger = LogManager.getLogger(GetMatchTypes.class);
 
 	public String getMatchType(String filePath) {
-		logger.debug("filePath : " + filePath);
-
 		LoginValues lValues = LoginValues.getInstance();
 		ProjectValues pValues = ProjectValues.getInstance();
 		
@@ -83,8 +81,6 @@ public class GetMatchTypes {
 						break;
 					}
 				}
-
-				logger.debug("getMatchType : true 1");
 	        } else {
 	        	JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
 				// loop all matches in case of match_type is 'intake'
@@ -106,8 +102,6 @@ public class GetMatchTypes {
 						break;
 					}
 				}
-
-				logger.debug("getMatchType : false 2");
 	        }
 		} catch (Exception e) {
 			logger.error("Exception Message", e);
@@ -120,9 +114,6 @@ public class GetMatchTypes {
 				logger.error("Exception Message", e);
 			}
 		}
-
-		logger.debug("matchType : " + matchType);
-
-		return matchType;		
+		return matchType;
 	}
 }

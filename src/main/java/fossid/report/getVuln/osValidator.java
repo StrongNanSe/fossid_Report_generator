@@ -6,7 +6,7 @@ public class OsValidator {
 	 /**
 	  * refer to http://blog.devez.net/214
 	  */	
-	 private static String OS = System.getProperty("os.name").toLowerCase();
+	 private static final String OS = System.getProperty("os.name").toLowerCase();
 
      public static boolean isWindows() {
 	        return (OS.contains("win"));

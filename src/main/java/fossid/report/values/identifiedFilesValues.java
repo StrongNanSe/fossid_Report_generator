@@ -25,24 +25,24 @@ public class IdentifiedFilesValues implements Serializable {
 	private int patentIssueFileCount;
 	private int analyzedFileCount;
 	
-	private ArrayList<String> filepath = new ArrayList<String>();
-	private ArrayList<String> identificationCopyright = new ArrayList<String>();
+	private final ArrayList<String> filepath = new ArrayList<String>();
+	private final ArrayList<String> identificationCopyright = new ArrayList<String>();
 	
-	private ArrayList<String> componenetName = new ArrayList<String>();
-	private ArrayList<String> componentVersion = new ArrayList<String>();
-	private ArrayList<String> componentCopyright = new ArrayList<String>();
-	private ArrayList<String> componentCPE = new ArrayList<String>();
-	private ArrayList<String> componentLicenseName = new ArrayList<String>();
-	private ArrayList<String> componentCopyleft = new ArrayList<String>();
+	private final ArrayList<String> componentName = new ArrayList<String>();
+	private final ArrayList<String> componentVersion = new ArrayList<String>();
+	private final ArrayList<String> componentCopyright = new ArrayList<String>();
+	private final ArrayList<String> componentCPE = new ArrayList<String>();
+	private final ArrayList<String> componentLicenseName = new ArrayList<String>();
+	private final ArrayList<String> componentCopyleft = new ArrayList<String>();
 	
-	private ArrayList<String> fileLicenseName = new ArrayList<String>();
-	private ArrayList<String> fileLicenseCopyleft = new ArrayList<String>();
-	private ArrayList<String> fileLicenseMatchType = new ArrayList<String>();
+	private final ArrayList<String> fileLicenseName = new ArrayList<String>();
+	private final ArrayList<String> fileLicenseCopyleft = new ArrayList<String>();
+	private final ArrayList<String> fileLicenseMatchType = new ArrayList<String>();
 	
-	private ArrayList<String> comment = new ArrayList<String>();
+	private final ArrayList<String> comment = new ArrayList<String>();
 	
-	private ArrayList<String> matchType = new ArrayList<String>();
-	private Map<String, String> matchTypeHashmap = new HashMap<>();
+	private final ArrayList<String> matchType = new ArrayList<String>();
+	private final Map<String, String> matchTypeHashmap = new HashMap<>();
 
 	public int getAnalyzedFileCount() {
 		return analyzedFileCount;
@@ -115,10 +115,10 @@ public class IdentifiedFilesValues implements Serializable {
 	}
 	
 	public ArrayList<String> getComponentName() {
-		return componenetName;
+		return componentName;
 	}
 	public void setComponentName(String componentName) {
-		this.componenetName.add(componentName);
+		this.componentName.add(componentName);
 	}
 
 	public ArrayList<String> getComponentVersion() {

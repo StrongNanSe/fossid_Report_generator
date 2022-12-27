@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ProjectValues implements Serializable {
 	
-		private static ProjectValues values = new ProjectValues();
+		private static final ProjectValues values = new ProjectValues();
 
 		public ProjectValues() {
 		}

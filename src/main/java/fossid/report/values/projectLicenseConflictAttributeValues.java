@@ -14,21 +14,21 @@ public class ProjectLicenseConflictAttributeValues implements Serializable {
 		return values;
 	}
 	
-	private ArrayList<String> prlicenseName = new ArrayList<String>();
-	private ArrayList<String> prconflictReason = new ArrayList<String>();
+	private final ArrayList<String> prLicenseName = new ArrayList<String>();
+	private final ArrayList<String> prConflictReason = new ArrayList<String>();
 	
 	public ArrayList<String> getPrLicenseConflictName() {
-		return prlicenseName;
+		return prLicenseName;
 	}
 	public void setPrLicenseConflictName(String licenseName) {
-		this.prlicenseName.add(licenseName);
+		this.prLicenseName.add(licenseName);
 	}
 	
 	public ArrayList<String> getPrLicenseConflictReason() {
-		return prconflictReason;
+		return prConflictReason;
 	}
 	public void setPrLicenseConflictReason(String conflictReason) {
-		this.prconflictReason.add(conflictReason);
+		this.prConflictReason.add(conflictReason);
 	}	
 
 }

@@ -14,7 +14,7 @@ public class RunCli {
 	private static final Logger logger = LogManager.getLogger(RunCli.class);
     public void runCli(String cliPath) {		
     	getProp(cliPath);		
-    	cliexe();
+    	cliExe();
 	}
 
 	static String fossidCli = "";
@@ -37,50 +37,53 @@ public class RunCli {
 			fossidCli = cliPath;
 		}
 				
-		String end = fossidCli.substring(fossidCli.length() - 1, fossidCli.length());		
+		String end = fossidCli.substring(fossidCli.length() - 1, fossidCli.length());
 		  
 		// To set path based on platform
-		if(end.equals("/") || end.equals("\\")) {		  		
-		 } else {
+		if(!(end.equals("/") || end.equals("\\"))) {
 			if(OsValidator.isWindows()) {
 				fossidCli = fossidCli + "\\";
 			} else if (OsValidator.isMac() || OsValidator.isSolaris() || OsValidator.isUnix()){
 				fossidCli = fossidCli + "/";
 			}
-		}		
+		}
 	}
 
-	public void cliexe() {
+	public void cliExe() {
 		VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 
 		String command = "";
-		String vulnResult = "";
-		
+//		String vulnResult = "";
+
 		for(int i = 0; i < vulnerableComponent.getComponentCPE().size(); i++) {
+			String componentCPE = vulnerableComponent.getComponentCPE().get(i);
+			String componentVersion = vulnerableComponent.getComponentVersion().get(i);
+			String componentName = vulnerableComponent.getComponentName().get(i);
+
 			if(OsValidator.isWindows()){
 				
 				try {					
-					command = fossidCli + "fossid-cli.exe --cpe " + vulnerableComponent.getComponentCPE().get(i);
+					command = fossidCli + "fossid-cli.exe --cpe " + componentCPE;
 					shellCmd(command);
 				} catch (Exception e) {
 					logger.error("Exception Message", e);
 				}
 
-				logger.debug(cliResult);
+				logger.debug("cliResult : " + cliResult);
 
-				SetVulnData.setData(cliResult, vulnerableComponent.getComponentCPE().get(i).toString(),
-						vulnerableComponent.getComponentName().get(i).toString(), vulnerableComponent.getComponentVersion().get(i).toString());
+				SetVulnData.setData(cliResult, componentCPE,
+						componentName, componentVersion);
 			} else if(OsValidator.isUnix() || OsValidator.isSolaris()){
 				
 				try {					
-					command = fossidCli + "fossid-cli --cpe " + vulnerableComponent.getComponentCPE().get(i);
+					command = fossidCli + "fossid-cli --cpe " + componentCPE;
 					shellCmd(command);
 				} catch (Exception e) {
 					logger.error("Exception Message", e);
 				}		
 				
-				SetVulnData.setData(cliResult, vulnerableComponent.getComponentCPE().get(i).toString(),
-						vulnerableComponent.getComponentName().get(i).toString(), vulnerableComponent.getComponentVersion().get(i).toString());
+				SetVulnData.setData(cliResult, componentCPE,
+						componentName, componentVersion);
 			}
 		}
 	}
