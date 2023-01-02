@@ -1,17 +1,16 @@
 package fossid.report.excel;
 
-import jxl.write.WritableSheet;
-import jxl.write.WriteException;
-
-import java.util.ArrayList;
-
 import fossid.report.attribute.SetCompareLicenseAttribute;
-import fossid.report.values.ProjectValues;
 import fossid.report.values.BillOfMaterialsValues;
 import fossid.report.values.CompareLicenseAttributeValues;
 import fossid.report.values.ProjectLicenseAttributeValues;
+import fossid.report.values.ProjectValues;
+import jxl.write.WritableSheet;
+import jxl.write.WriteException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
 
 public class CreateSheet1 extends CreateSheet{
 	private final Logger logger = LogManager.getLogger(CreateSheet1.class);
@@ -539,6 +538,5 @@ public class CreateSheet1 extends CreateSheet{
 		addLabel(sheet1, 0, 23, "오픈소스센터\n의견", style.sh1tableFormat2);
 		sheet1.mergeCells(2, 23, 9, 23);
 		addBlank(sheet1, 2, 23, style.sh1tableFormat1);
-	
 	}
 }

@@ -2,7 +2,6 @@ package fossid.report.attribute;
 
 import fossid.report.values.ProjectLicenseAttributeValues;
 import fossid.report.values.ProjectValues;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -10,10 +9,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 ;
 
@@ -29,14 +26,14 @@ public class SetProjectLicenseAttribute {
 	private void projectAttribute() {
 		ProjectLicenseAttributeValues licenseAttributes = ProjectLicenseAttributeValues.getInstance();
 		ProjectValues pValues = ProjectValues.getInstance();
-		InputStream inputStream = null;
+		String jsonPath = System.getProperty("user.dir") + "\\license_Attribute.json";
+		FileReader resources = null;
 
 		try {
-			inputStream = getClass().getResourceAsStream("/license_Attribute.json");
-			String attribute = IOUtils.toString(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+			resources = new FileReader(jsonPath);
 
 			JSONParser parser = new JSONParser();
-			Object object1 = parser.parse(attribute);
+			Object object1 = parser.parse(resources);
 			JSONObject object2 = (JSONObject) object1;
 			JSONArray array1 = (JSONArray) object2.get("licenseattribute");
 
@@ -65,8 +62,8 @@ public class SetProjectLicenseAttribute {
 			logger.error("Exception Message", e);
 		} finally {
 			try {
-				if (inputStream != null) {
-					inputStream.close();
+				if (resources != null) {
+					resources.close();
 				}
 			} catch (Exception e) {
 				logger.error("Exception Message", e);

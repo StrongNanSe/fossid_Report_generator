@@ -43,7 +43,6 @@ public class CreateSheet {
 
 		label = new Label(col, row, text, format);
 		sheet.addCell(label);
-
 	}
 
 	public void addBlank(WritableSheet sheet, int col, int row, WritableCellFormat format)
@@ -51,6 +50,5 @@ public class CreateSheet {
 
 		blank = new Blank(col, row, format);
 		sheet.addCell(blank);
-
 	}
 }
