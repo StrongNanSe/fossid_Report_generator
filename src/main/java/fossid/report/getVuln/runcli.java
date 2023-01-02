@@ -4,10 +4,7 @@ import fossid.report.values.VulnerableComponents;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Properties;
 
 public class RunCli {
@@ -21,38 +18,49 @@ public class RunCli {
 	static String cliResult = "";
 	
 	public void getProp(String cliPath) {
+		String propsPath = System.getProperty("user.dir") + "\\config.properties";
+		FileReader resources = null;
 		Properties props = new Properties();
-		InputStream is = getClass().getResourceAsStream("/config.properties");
-		
+
 		try {
-			props.load(is);
+			resources = new FileReader(propsPath);
+			props.load(resources);
+
+			// To get path of cli
+			if(cliPath.equals("")) {
+				fossidCli = props.getProperty("fossid.cli");
+			} else {
+				fossidCli = cliPath;
+			}
+
+			String end = fossidCli.substring(fossidCli.length() - 1);
+
+			// To set path based on platform
+			if(!(end.equals("/") || end.equals("\\"))) {
+				if(OsValidator.isWindows()) {
+					fossidCli = fossidCli + "\\";
+				} else if (OsValidator.isMac() || OsValidator.isSolaris() || OsValidator.isUnix()){
+					fossidCli = fossidCli + "/";
+				}
+			}
 		} catch (IOException e1) {
 			logger.error("Exception Message", e1);
-		}
-		
-		// To get path of cli
-		if(cliPath.equals("")) {
-			fossidCli = props.getProperty("fossid.cli");
-		} else {
-			fossidCli = cliPath;
-		}
-				
-		String end = fossidCli.substring(fossidCli.length() - 1, fossidCli.length());
-		  
-		// To set path based on platform
-		if(!(end.equals("/") || end.equals("\\"))) {
-			if(OsValidator.isWindows()) {
-				fossidCli = fossidCli + "\\";
-			} else if (OsValidator.isMac() || OsValidator.isSolaris() || OsValidator.isUnix()){
-				fossidCli = fossidCli + "/";
+		} finally {
+			try {
+				if (resources != null) {
+					resources.close();
+				}
+			} catch (Exception e) {
+				logger.error("Exception Message", e);
 			}
 		}
+
 	}
 
 	public void cliExe() {
 		VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 
-		String command = "";
+		String command;
 //		String vulnResult = "";
 
 		for(int i = 0; i < vulnerableComponent.getComponentCPE().size(); i++) {

@@ -5,7 +5,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.util.Iterator;
 
@@ -15,14 +14,16 @@ public class SetVulnData {
 		VulnerableComponents vulnerableComponent = VulnerableComponents.getInstance();
 		
 		JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObj1, jsonObj2, jsonObj3, jsonObj4, jsonObj5;
+        JSONObject jsonObj1, jsonObj2, impact, baseMetric, cvss = null;
         Iterator iter;
-        
-        
+
 		try {
-			jsonObj1 = (JSONObject) jsonParser.parse(cliResult.toString());			
+			jsonObj1 = (JSONObject) jsonParser.parse(cliResult);
 			jsonObj2 = (JSONObject) jsonObj1.get(componentCPE);
-			
+
+			logger.debug("jsonObj1 : " + jsonObj1);
+			logger.debug("jsonObj2 : " + jsonObj2);
+
 			iter = jsonObj2.keySet().iterator();
 			
 			while(iter.hasNext()) {	  
@@ -31,49 +32,81 @@ public class SetVulnData {
             	// get values from key
             	JSONObject tempObj = (JSONObject) jsonObj2.get(key);
 
-				logger.debug("tempObj : " + tempObj.toString());
+				logger.debug("tempObj : " + tempObj);
 
-            	jsonObj3 = (JSONObject) tempObj.get("impact");
+            	impact = (JSONObject) tempObj.get("impact");
            	
-            	String severity = "";
+            	String severity;
 
-				logger.debug("jsonObj3 : " + jsonObj3.toString());
+				logger.debug("impact : " + impact);
 
-            	if(jsonObj3 != null) {
+            	if(impact != null) {
+					if (impact.containsKey("baseMetricV2")) {
+						baseMetric = (JSONObject) impact.get("baseMetricV2");
 
-            		jsonObj4 = (JSONObject) jsonObj3.get("baseMetricV2");
+						if (baseMetric.containsKey("cvssV2")) {
+							cvss = (JSONObject) baseMetric.get("cvssV2");
+						} else {
+							logger.debug("No Exit cvssV2");
+						}
+					} else {
+						logger.debug("No Exit baseMetricV2");
 
-					logger.debug("jsonObj4 : " + jsonObj4.toString());
+						baseMetric = (JSONObject) impact.get("baseMetricV3");
 
-                	jsonObj5 = (JSONObject) jsonObj4.get("cvssV2");
+						if (baseMetric.containsKey("cvssV3")) {
+							cvss = (JSONObject) baseMetric.get("cvssV3");
+						} else {
+							logger.debug("No Exit cvssV3");
+						}
+					}
 
-                	String baseScore = jsonObj5.get("baseScore").toString();
+					if (cvss != null) {
+						String baseScore = cvss.get("baseScore").toString();
 
-                	if(jsonObj4.get("severity").toString().equals("HIGH") || jsonObj4.get("severity").toString().equals("MEDIUM")) {
-                	//if(jsonObj4.get("severity").toString().equals("HIGH")) {
+						if (baseMetric.containsKey("severity")) {
+							severity = baseMetric.get("severity").toString() + "(" + baseScore +")";
+						} else {
+							severity = cvss.get("baseSeverity").toString() + "(" + baseScore +")";
+						}
 
-    		            severity = jsonObj4.get("severity").toString() + "(" + jsonObj5.get("baseScore").toString() +")";
+						vulnerableComponent.setVulComponentName(componentName);
+						vulnerableComponent.setVulComponentVersion(componentVersion);
+						vulnerableComponent.setVulCVE(key);
+						vulnerableComponent.setVulSeverity(severity);
 
-    		            vulnerableComponent.setVulComponentName(componentName);
-    		            vulnerableComponent.setVulComponentVersion(componentVersion);
-    		            vulnerableComponent.setVulCVE(key);
-    		            vulnerableComponent.setVulSeverity(severity);
-    		            vulnerableComponent.setVulAttackVector(jsonObj5.get("accessVector").toString());
-    		            vulnerableComponent.setVulAttackComplexity(jsonObj5.get("accessComplexity").toString());
-    		            vulnerableComponent.setVulAttackImpact(jsonObj5.get("availabilityImpact").toString());
+						if (cvss.containsKey("accessVector")) {
+							vulnerableComponent.setVulAttackVector(cvss.get("accessVector").toString());
+						} else {
+							vulnerableComponent.setVulAttackVector(cvss.get("attackVector").toString());
+						}
 
-						logger.debug(componentName+ "  " + componentVersion + "  " + key + "  " +	severity + "  " +
-								jsonObj5.get("accessVector").toString() + "  " + jsonObj5.get("accessComplexity").toString() + "  " +
-								jsonObj5.get("availabilityImpact").toString() + "  ");
-                	}
+						if (cvss.containsKey("accessComplexity")) {
+							vulnerableComponent.setVulAttackComplexity(cvss.get("accessComplexity").toString());
+						} else {
+							vulnerableComponent.setVulAttackComplexity(cvss.get("attackComplexity").toString());
+						}
 
-            	}
+						vulnerableComponent.setVulAttackImpact(cvss.get("availabilityImpact").toString());
 
+						logger.debug(vulnerableComponent.getVulComponentName()+ "  "
+								+ vulnerableComponent.getVulComponentVersion() + "  "
+								+ vulnerableComponent.getVulCVE() + "  "
+								+	vulnerableComponent.getVulSeverity() + "  "
+								+ vulnerableComponent.getVulAttackVector() + "  "
+								+ vulnerableComponent.getVulAttackComplexity() + "  "
+								+ vulnerableComponent.getVulAttackImpact() + "  ");
+					} else {
+						logger.debug("No Exit cvss");
+					}
+            	} else {
+					logger.debug("No Exit impact");
+				}
 			}
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			logger.error("Exception Message", e);
 		}
-		
+
 	}
 	
 }

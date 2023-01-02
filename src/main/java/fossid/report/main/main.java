@@ -100,7 +100,7 @@ public class Main {
 			PrintInfo.endFOSSID();
 
 			long end = System.currentTimeMillis();
-			logger.info("실행시간 : " + (end - start)/60000 + "m" + ((end - start)%60000)/1000 + "s");
+			logger.info("RunTime : " + (end - start)/60000 + "m" + ((end - start)%60000)/1000 + "s");
 		} catch (WriteException e) {
 			logger.error("Exception Message", e);
 			System.exit(1);

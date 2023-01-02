@@ -4,9 +4,8 @@ import jxl.write.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class CreateSheet {
@@ -17,21 +16,21 @@ public class CreateSheet {
 	Label label = null;
 
 
-	BufferedReader br;
 	Properties props = new Properties();
-	InputStream is;
+	String propsPath = System.getProperty("user.dir") + "\\config.properties";
+	FileReader resources = null;
 
 	public CreateSheet() {
 		style.setStyle();
-		is = getClass().getResourceAsStream("/config.properties");
 		try {
-			props.load(is);
+			resources = new FileReader(propsPath);
+			props.load(resources);
 		} catch (IOException e) {
 			logger.error("Exception Message", e);
 		} finally {
 			try {
-				if (is != null) {
-					is.close();
+				if (resources != null) {
+					resources.close();
 				}
 			} catch (IOException e) {
 				logger.error("Exception Message", e);

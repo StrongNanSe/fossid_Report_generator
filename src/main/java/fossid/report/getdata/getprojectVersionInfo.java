@@ -13,40 +13,36 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
-
-;
-
 public class GetProjectVersionInfo {
 	private final Logger logger = LogManager.getLogger(GetProjectVersionInfo.class);
 	
 	public void getInfo(String projectName, String scanName, String license) {
-		InputStream is = null;
+		String propsPath = System.getProperty("user.dir") + "\\config.properties";
+		FileReader resources = null;
 
 		try {
 			ProjectValues pValues = ProjectValues.getInstance();
 			Properties props = new Properties();
-			is = getClass().getResourceAsStream("/config.properties");
-			props.load(is);
-			
+			resources = new FileReader(propsPath);
+			props.load(resources);
+
 			// To change encoding to UTF-8
-			String encoding = "";
+			String encoding;
 			
 			if(projectName.equals("")) {
-				encoding = new String(props.getProperty("fossid.project").getBytes("iso-8859-1"), "UTF-8");			
+				encoding = new String(props.getProperty("fossid.project").getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 				pValues.setProjectName(encoding);
 			} else {
 				pValues.setProjectName(projectName);
 			}
 			
 			if(scanName.equals("")) {
-				encoding = new String(props.getProperty("fossid.scan").getBytes("iso-8859-1"), "UTF-8");			
+				encoding = new String(props.getProperty("fossid.scan").getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 				pValues.setVersionName(encoding);
 			} else {
 				pValues.setVersionName(scanName);
@@ -61,8 +57,8 @@ public class GetProjectVersionInfo {
 			logger.error("Exception Message", e);
 		} finally {
 			try {
-				if (is != null) {
-					is.close();
+				if (resources != null) {
+					resources.close();
 				}
 			} catch (Exception e) {
 				logger.error("Exception Message", e);
@@ -105,16 +101,16 @@ public class GetProjectVersionInfo {
 			}
 			
 			br = new BufferedReader(
-					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
+					new InputStreamReader(httpClientResponse.getEntity().getContent(), StandardCharsets.UTF_8));
 			String result = br.readLine();
 
-			logger.debug("result: " + result.toString());
+			logger.debug("result: " + result);
 
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj = (JSONObject) jsonParser.parse(result);
             JSONArray dataArray = (JSONArray) jsonObj.get("data");
             
-            ArrayList<String> projectList = new ArrayList<String>();
+            ArrayList<String> projectList = new ArrayList<>();
             //set projectid
 			for (Object o : dataArray) {
 				JSONObject tempObj = (JSONObject) o;
@@ -173,13 +169,13 @@ public class GetProjectVersionInfo {
 			}
 
 			br = new BufferedReader(
-					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
+					new InputStreamReader(httpClientResponse.getEntity().getContent(), StandardCharsets.UTF_8));
 			String result = br.readLine();
 
 			logger.debug("result: " + result);
 
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
+            JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result);
             JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
 
 			// set key value of jsonObj2 and run loop while(until) iter has value
@@ -241,14 +237,14 @@ public class GetProjectVersionInfo {
 			}
 			
 			br = new BufferedReader(
-					new InputStreamReader(httpClientResponse.getEntity().getContent(), "utf-8"));
+					new InputStreamReader(httpClientResponse.getEntity().getContent(), StandardCharsets.UTF_8));
 			String result = br.readLine();
 
-			logger.debug("result2: " + result.toString());
-			logger.debug("rootObject" + rootObject.toString());
+			logger.debug("result2: " + result);
+			logger.debug("rootObject" + rootObject);
 
 			JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result.toString());
+            JSONObject jsonObj1 = (JSONObject) jsonParser.parse(result);
             
             /**
              * Check Project contains fossid.scanname dedicated in config.properties.
@@ -261,7 +257,7 @@ public class GetProjectVersionInfo {
             	JSONObject jsonObj2 = (JSONObject) jsonObj1.get("data");
                 Iterator iter = jsonObj2.keySet().iterator();
                 
-                ArrayList<String> codeList = new ArrayList<String>();
+                ArrayList<String> codeList = new ArrayList<>();
                 // set key value of jsonObj2 and run loop while(until) iter has value	        
                 while(iter.hasNext()) {
                 	// set key value to key
